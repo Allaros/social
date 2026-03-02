@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter, Manrope } from 'next/font/google';
 import './globals.css';
 import QueryProvider from '@/providers/QueryProvider';
+import { Toaster } from '@/components/ui/sonner';
 
 const interFont = Inter({
    variable: '--font-inter',
@@ -30,6 +31,7 @@ export default function RootLayout({
          >
             <QueryProvider>
                <div className="max-w-7xl mx-auto px-">{children}</div>
+               <Toaster />
             </QueryProvider>
          </body>
       </html>

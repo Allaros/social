@@ -7,10 +7,35 @@ import { SignUpSchema } from '@/lib/validations';
 import { DynamicForm, FieldConfig } from '@/components/forms/DynamicForm';
 import Link from 'next/link';
 import ROUTES from '@/constants/routes';
+import { useRegister } from '@/hooks/auth/useRegister';
+
+import z from 'zod';
+import { handleApiError } from '@/lib/handlers/axiosErrHandling';
+import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
+import Loader from '@/components/common/loader';
 
 const Auth = () => {
+   const router = useRouter();
+   const queryClient = useQueryClient();
+   const { mutate: registrate, isPending } = useRegister();
+
+   const handleSubmit = (data: z.infer<typeof SignUpSchema>) => {
+      const { confirmPassword, ...payload } = data;
+      registrate(payload as ISignUp, {
+         onError: (error) => {
+            handleApiError(error, 'Ошибка при регистрации.');
+         },
+         onSuccess: () => {
+            queryClient.setQueryData(['registration', 'email'], payload.email);
+            router.push(ROUTES.auth.verify);
+         },
+      });
+   };
+
    return (
       <>
+         <Loader isPending={isPending} />
          <div className="w-full flex flex-col gap-4">
             <AuthButton
                icon={GoogleIco}
@@ -41,15 +66,15 @@ const Auth = () => {
                   { name: 'name', label: 'Имя', type: 'text' },
                   { name: 'email', label: 'Email', type: 'text' },
                   { name: 'username', label: 'Псевдоним', type: 'text' },
-                  { name: 'password', label: 'Пароль', type: 'text' },
+                  { name: 'password', label: 'Пароль', type: 'password' },
                   {
                      name: 'confirmPassword',
                      label: 'Подтверждение пароля',
-                     type: 'text',
+                     type: 'password',
                   },
                ] as FieldConfig<typeof SignUpSchema>[]
             }
-            onSubmit={(data) => console.log(data)}
+            onSubmit={handleSubmit}
             btnText="Продолжить"
          />
          <div className="mt-2 texBody text-neutralBlack-600">

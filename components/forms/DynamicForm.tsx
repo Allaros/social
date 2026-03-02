@@ -38,7 +38,7 @@ type DynamicFormProps<TSchema extends ZodObject<ZodRawShape>> = {
    onSubmit: (data: z.infer<TSchema>) => void;
    btnText?: string;
    forgetBtn?: boolean;
-} & React.FormHTMLAttributes<HTMLFormElement>;
+} & Omit<React.FormHTMLAttributes<HTMLFormElement>, 'onSubmit'>;
 
 export function DynamicForm<TSchema extends ZodObject<ZodRawShape>>({
    schema,

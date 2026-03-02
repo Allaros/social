@@ -7,6 +7,7 @@ const ROUTES = {
       resetPass: '/reset-password',
       loginWithEmail: '/login-email',
    },
+   home: '/',
 };
 
 export default ROUTES;

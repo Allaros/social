@@ -7,7 +7,7 @@ const ResendTimer = ({
    btnFunc,
 }: {
    seconds: number;
-   btnFunc: () => Promise<void>;
+   btnFunc: () => void;
 }) => {
    const [secondsLeft, setSecondsLeft] = useState(seconds);
 
@@ -41,6 +41,7 @@ const ResendTimer = ({
             </p>
          ) : (
             <button
+               type="button"
                className="textBody-medium text-neutralBlack-900 cursor-pointer"
                onClick={btnFunc}
             >

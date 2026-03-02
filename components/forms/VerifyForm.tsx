@@ -1,13 +1,24 @@
+'use client';
+
 import { VerifySchema } from '@/lib/validations';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 import ResendTimer from '../auth/ResendTimer';
+import { useRouter } from 'next/navigation';
+import { useVerify } from '@/hooks/auth/useVerify';
+import { handleApiError } from '@/lib/handlers/axiosErrHandling';
+import ROUTES from '@/constants/routes';
+import { useResend } from '@/hooks/auth/useResend';
+import { error } from 'console';
 
 type FormValues = z.infer<typeof VerifySchema>;
 
 const VerifyForm = () => {
+   const router = useRouter();
+   const { mutate: verify } = useVerify();
+   const { mutate: resend } = useResend();
    const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
    const {
@@ -62,7 +73,14 @@ const VerifyForm = () => {
    };
 
    const onSubmit = (data: FormValues) => {
-      console.log(data.code);
+      verify(data as IVerify, {
+         onError: (error) => {
+            handleApiError(error, 'Ошибка при верификации');
+         },
+         onSuccess: () => {
+            router.push(ROUTES.home);
+         },
+      });
    };
 
    return (
@@ -76,7 +94,7 @@ const VerifyForm = () => {
                   key={index}
                   type="text"
                   maxLength={1}
-                  className="max-w-11 h-11 border h4 rounded-sm outline-neutralBlack-300 text-center border-neutralWhite-500"
+                  className={`${errors.code ? 'border-danger-600' : 'border-neutralWhite-500'} max-w-11 h-11 border h4 rounded-sm outline-neutralBlack-300 text-center `}
                   ref={(el) => {
                      inputsRef.current[index] = el;
                   }}
@@ -86,13 +104,21 @@ const VerifyForm = () => {
                   onKeyDown={(e) => handleKeyDown(e, index)}
                />
             ))}
-
-            {errors.code && (
-               <p className="text-red-500">{errors.code.message}</p>
-            )}
          </div>
-
-         <ResendTimer seconds={60} />
+         {errors.code && (
+            <p className="text-danger-900 textBody">{errors.code.message}</p>
+         )}
+         <ResendTimer
+            btnFunc={() =>
+               resend(undefined, {
+                  onSuccess: () => console.log('новый код отправлен'),
+                  onError: (error) => {
+                     handleApiError(error, 'Ошибка при отправке');
+                  },
+               })
+            }
+            seconds={60}
+         />
 
          <button
             type="submit"

@@ -7,10 +7,36 @@ import { SignInSchema } from '@/lib/validations';
 import { DynamicForm, FieldConfig } from '@/components/forms/DynamicForm';
 import Link from 'next/link';
 import ROUTES from '@/constants/routes';
+import { useRouter } from 'next/navigation';
+import { useLogin } from '@/hooks/auth/useLogin';
+import Loader from '@/components/common/loader';
+import z from 'zod';
+import { handleApiError } from '@/lib/handlers/axiosErrHandling';
+import { error } from 'console';
+import { AxiosError } from 'axios';
 
 const Auth = () => {
+   const router = useRouter();
+   const { mutate: login, isPending } = useLogin();
+
+   const handleSubmit = (data: z.infer<typeof SignInSchema>) => {
+      login(data, {
+         onError: (error: AxiosError<ApiErrorResponse>) => {
+            const code = error.response?.data.code;
+
+            if (code === 'EMAIL_NOT_VERIFIED') {
+               router.push(ROUTES.auth.verify);
+            }
+
+            handleApiError(error);
+         },
+         onSuccess: () => router.push(ROUTES.home),
+      });
+   };
+
    return (
       <>
+         <Loader isPending={isPending} />
          <div className="w-full flex flex-col gap-4">
             <AuthButton
                icon={GoogleIco}
@@ -39,10 +65,10 @@ const Auth = () => {
             fields={
                [
                   { name: 'email', label: 'Email', type: 'text' },
-                  { name: 'password', label: 'Пароль', type: 'text' },
+                  { name: 'password', label: 'Пароль', type: 'password' },
                ] as FieldConfig<typeof SignInSchema>[]
             }
-            onSubmit={(data) => console.log(data)}
+            onSubmit={handleSubmit}
             btnText="Войти"
             forgetBtn
          />
