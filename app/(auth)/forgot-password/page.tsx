@@ -12,18 +12,7 @@ const ForgotPassword = () => {
    const { mutate: sendMail, isPending } = useSendRecoveryEmail();
 
    const handleSubmit = (data: z.infer<typeof ForgotSchema>) => {
-      sendMail(data, {
-         onError: (err) => {
-            toast.success(
-               'Если email зарегистрирован, ссылка для сброса пароля отправлена'
-            );
-         },
-         onSuccess: () => {
-            toast.success(
-               'Если email зарегистрирован, ссылка для сброса пароля отправлена'
-            );
-         },
-      });
+      sendMail(data);
    };
 
    return (

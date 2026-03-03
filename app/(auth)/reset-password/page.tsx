@@ -28,15 +28,7 @@ const ResetPassword = () => {
          password,
          token,
       };
-      changePass(payload, {
-         onError: (err) => {
-            handleApiError(err);
-         },
-         onSuccess: () => {
-            toast.success('Пароль успешно изменен');
-            router.replace(ROUTES.auth.signIn);
-         },
-      });
+      changePass(payload);
    };
 
    return (

@@ -1,14 +1,18 @@
 'use client';
-import { useAuth } from '@/hooks/auth/useAuth';
-import React from 'react';
+
+import { useMe } from '@/hooks/auth/useMe';
 import Loader from '../common/loader';
+import { useLogout } from '@/hooks/auth/useLogout';
 
 const TestComponent = () => {
-   const { user, isLoading } = useAuth();
+   const { mutate: logout, isPending } = useLogout();
 
-   console.log(user);
-   if (isLoading) return <Loader isPending={isLoading} />;
-   return <div>{user.id}</div>;
+   if (isPending) return <Loader isPending={isPending} />;
+   return (
+      <div>
+         <button onClick={() => logout()}>Logout</button>
+      </div>
+   );
 };
 
 export default TestComponent;

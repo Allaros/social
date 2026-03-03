@@ -1,4 +1,5 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import { triggerLogout } from '../handlers/sessionHandler';
 
 let isRefreshing = false;
 let failedQueue: {
@@ -27,41 +28,28 @@ api.interceptors.response.use(
 
       const url = originalRequest?.url ?? '';
 
-      const isAuthEndpoint =
-         url.includes('/auth/login') ||
-         url.includes('/auth/refresh') ||
-         url.includes('/auth/register');
-
-      if (
-         error.response?.status === 401 &&
-         originalRequest &&
-         !originalRequest._retry &&
-         !isAuthEndpoint
-      ) {
-         if (isRefreshing) {
-            return new Promise((resolve, reject) => {
-               failedQueue.push({
-                  resolve: () => resolve(api(originalRequest)),
-                  reject,
-               });
-            });
-         }
-
-         originalRequest._retry = true;
-         isRefreshing = true;
-
-         try {
-            await api.post('/auth/refresh');
-            processQueue(null);
-            return api(originalRequest);
-         } catch (refreshError) {
-            processQueue(refreshError);
-            return Promise.reject(refreshError);
-         } finally {
-            isRefreshing = false;
-         }
+      if (error.response?.status !== 401 || !originalRequest) {
+         return Promise.reject(error);
       }
 
-      return Promise.reject(error);
+      if (url.includes('/auth/refresh')) {
+         triggerLogout();
+         return Promise.reject(error);
+      }
+
+      if (originalRequest._retry) {
+         triggerLogout();
+         return Promise.reject(error);
+      }
+
+      originalRequest._retry = true;
+
+      try {
+         await api.post('/auth/refresh');
+         return api(originalRequest);
+      } catch (refreshError) {
+         triggerLogout();
+         return Promise.reject(refreshError);
+      }
    }
 );

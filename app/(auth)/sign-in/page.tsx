@@ -11,27 +11,15 @@ import { useRouter } from 'next/navigation';
 import { useLogin } from '@/hooks/auth/useLogin';
 import Loader from '@/components/common/loader';
 import z from 'zod';
-import { handleApiError } from '@/lib/handlers/axiosErrHandling';
-import { error } from 'console';
-import { AxiosError } from 'axios';
+import { useGoogleAuth } from '@/hooks/auth/useGoogleAuth';
 
 const Auth = () => {
    const router = useRouter();
    const { mutate: login, isPending } = useLogin();
+   const { loginWithGoogle } = useGoogleAuth();
 
    const handleSubmit = (data: z.infer<typeof SignInSchema>) => {
-      login(data, {
-         onError: (error: AxiosError<ApiErrorResponse>) => {
-            const code = error.response?.data.code;
-
-            if (code === 'EMAIL_NOT_VERIFIED') {
-               router.push(ROUTES.auth.verify);
-            }
-
-            handleApiError(error);
-         },
-         onSuccess: () => router.push(ROUTES.home),
-      });
+      login(data);
    };
 
    return (
@@ -43,6 +31,7 @@ const Auth = () => {
                alt="sign in with google"
                width={16}
                height={16}
+               btnFunc={loginWithGoogle}
             >
                Войти через Google
             </AuthButton>
@@ -51,6 +40,7 @@ const Auth = () => {
                alt="sign in with email"
                width={16}
                height={16}
+               btnFunc={() => console.log('mail')}
             >
                Войти через email
             </AuthButton>

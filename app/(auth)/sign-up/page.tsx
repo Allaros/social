@@ -11,13 +11,9 @@ import { useRegister } from '@/hooks/auth/useRegister';
 
 import z from 'zod';
 import { handleApiError } from '@/lib/handlers/axiosErrHandling';
-import { useRouter } from 'next/navigation';
-import { useQueryClient } from '@tanstack/react-query';
 import Loader from '@/components/common/loader';
 
 const Auth = () => {
-   const router = useRouter();
-   const queryClient = useQueryClient();
    const { mutate: registrate, isPending } = useRegister();
 
    const handleSubmit = (data: z.infer<typeof SignUpSchema>) => {
@@ -25,10 +21,6 @@ const Auth = () => {
       registrate(payload as ISignUp, {
          onError: (error) => {
             handleApiError(error, 'Ошибка при регистрации.');
-         },
-         onSuccess: () => {
-            queryClient.setQueryData(['registration', 'email'], payload.email);
-            router.push(ROUTES.auth.verify);
          },
       });
    };

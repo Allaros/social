@@ -5,7 +5,8 @@ export const useMe = () => {
    return useQuery({
       queryKey: ['me'],
       queryFn: authApi.me,
-      staleTime: 2 * 60 * 1000,
+      staleTime: Infinity,
       retry: false,
+      refetchOnWindowFocus: false,
    });
 };

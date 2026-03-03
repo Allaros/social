@@ -11,7 +11,6 @@ import { useVerify } from '@/hooks/auth/useVerify';
 import { handleApiError } from '@/lib/handlers/axiosErrHandling';
 import ROUTES from '@/constants/routes';
 import { useResend } from '@/hooks/auth/useResend';
-import { error } from 'console';
 
 type FormValues = z.infer<typeof VerifySchema>;
 
@@ -76,9 +75,6 @@ const VerifyForm = () => {
       verify(data as IVerify, {
          onError: (error) => {
             handleApiError(error, 'Ошибка при верификации');
-         },
-         onSuccess: () => {
-            router.push(ROUTES.home);
          },
       });
    };
