@@ -19,4 +19,8 @@ export const authApi = {
 
       return data;
    },
+   me: async () => {
+      const { data } = await api.get('auth/me');
+      return data;
+   },
 };

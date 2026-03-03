@@ -3,6 +3,15 @@ interface ISignIn {
    password: string;
 }
 
+interface ISendRecoveryMail {
+   email: string;
+}
+
+interface IChangePass {
+   password: string;
+   token: string;
+}
+
 interface ISignUp {
    email: string;
    password: string;
