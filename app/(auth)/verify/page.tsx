@@ -1,6 +1,6 @@
 'use client';
 
-import VerifyForm from '@/components/forms/VerifyForm';
+import VerifyForm from '@/features/auth/components/forms/VerifyForm';
 import { useQueryClient } from '@tanstack/react-query';
 
 const VerifyPage = () => {

@@ -1,22 +1,20 @@
 'use client';
 
-import AuthButton from '@/components/auth/AuthButton';
-import GoogleIco from '@/assets/icons/Google.svg';
-import MailIco from '@/assets/icons/Email.svg';
-import { SignInSchema } from '@/lib/validations';
-import { DynamicForm, FieldConfig } from '@/components/forms/DynamicForm';
+import AuthButton from '@/features/auth/components/AuthButton';
+import GoogleIco from '@/public/icons/Google.svg';
+import MailIco from '@/public/icons/Email.svg';
+import { SignInSchema } from '@/shared/utils/validations';
+import {
+   DynamicForm,
+   FieldConfig,
+} from '@/features/auth/components/forms/DynamicForm';
 import Link from 'next/link';
-import ROUTES from '@/constants/routes';
-import { useRouter } from 'next/navigation';
-import { useLogin } from '@/hooks/auth/useLogin';
-import Loader from '@/components/common/loader';
+import ROUTES from '@/shared/constants/routes';
+import { useLogin } from '@/features/auth/hooks/useLogin';
 import z from 'zod';
-import { useGoogleAuth } from '@/hooks/auth/useGoogleAuth';
 
 const Auth = () => {
-   const router = useRouter();
    const { mutate: login, isPending } = useLogin();
-   const { loginWithGoogle } = useGoogleAuth();
 
    const handleSubmit = (data: z.infer<typeof SignInSchema>) => {
       login(data);
@@ -24,14 +22,13 @@ const Auth = () => {
 
    return (
       <>
-         <Loader isPending={isPending} />
          <div className="w-full flex flex-col gap-4">
             <AuthButton
                icon={GoogleIco}
                alt="sign in with google"
                width={16}
                height={16}
-               btnFunc={loginWithGoogle}
+               isLink={ROUTES.auth.googleOAuth}
             >
                Войти через Google
             </AuthButton>
@@ -40,7 +37,7 @@ const Auth = () => {
                alt="sign in with email"
                width={16}
                height={16}
-               btnFunc={() => console.log('mail')}
+               isLink={ROUTES.auth.loginWithEmail}
             >
                Войти через email
             </AuthButton>
@@ -59,6 +56,7 @@ const Auth = () => {
                ] as FieldConfig<typeof SignInSchema>[]
             }
             onSubmit={handleSubmit}
+            btnDisabled={isPending}
             btnText="Войти"
             forgetBtn
          />

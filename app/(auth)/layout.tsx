@@ -1,6 +1,6 @@
 'use client';
 
-import AuthHeader from '@/components/auth/AuthHeader';
+import AuthHeader from '@/features/auth/components/navigation/AuthHeader';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 

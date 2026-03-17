@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
 import { Inter, Manrope } from 'next/font/google';
 import './globals.css';
-import QueryProvider from '@/providers/QueryProvider';
-import { Toaster } from '@/components/ui/sonner';
+import QueryProvider from '@/shared/providers/QueryProvider';
+import { Toaster } from '@/shared/components/ui/sonner';
+import ModalsProvider from '@/features/modal/providers/ModalsProvider';
+import LoaderProvider from '@/features/loader/providers/LoaderProvider';
+import MainProvider from '@/shared/providers/MainProvider';
+import SmoothScroll from '@/shared/components/SmoothScroll';
 
 const interFont = Inter({
-   variable: '--font-inter',
    subsets: ['latin', 'cyrillic'],
 });
 const manrope = Manrope({
@@ -27,12 +30,15 @@ export default function RootLayout({
    return (
       <html lang="en">
          <body
-            className={`${interFont.variable} ${manrope.variable} bg-neutralWhite-200 antialiased`}
+            className={`${manrope.variable} ${interFont.className}  bg-neutralWhite-200 antialiased`}
          >
-            <QueryProvider>
-               <div className="max-w-7xl mx-auto px-">{children}</div>
+            <MainProvider>
+               <SmoothScroll />
+               <div className="max-w-7xl mx-auto px-6 box-content pb-10">
+                  {children}
+               </div>
                <Toaster />
-            </QueryProvider>
+            </MainProvider>
          </body>
       </html>
    );

@@ -6,7 +6,7 @@
 
 @config '../tailwind.config.ts';
 body {
-   font-family: var(--font-geist-sans), sans-serif;
+   font-family: var(--font-inter), sans-serif;
    min-height: 100vh;
 }
 
@@ -64,6 +64,10 @@ body {
    }
    .textLabel-medium {
       @apply text-[12px] font-medium;
+   }
+
+   .card {
+      @apply bg-neutralWhite-100 border border-neutralWhite-400 rounded-sm;
    }
 }
 
@@ -175,4 +179,20 @@ body {
    --sidebar-accent-foreground: oklch(0.985 0 0);
    --sidebar-border: oklch(1 0 0 / 10%);
    --sidebar-ring: oklch(0.556 0 0);
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+   @apply text-neutralBlack-300;
+   content: attr(data-placeholder);
+   float: left;
+   height: 0;
+   pointer-events: none;
+}
+
+.tiptap ul {
+   @apply list-disc pl-6;
+}
+
+.tiptap ol {
+   @apply list-decimal pl-6;
 }

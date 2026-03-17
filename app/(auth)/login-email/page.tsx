@@ -1,9 +1,19 @@
 'use client';
 
-import DynamicForm, { FieldConfig } from '@/components/forms/DynamicForm';
-import { ForgotSchema } from '@/lib/validations';
+import Loader from '@/features/loader/components/Loader';
+import DynamicForm, {
+   FieldConfig,
+} from '@/features/auth/components/forms/DynamicForm';
+import { useMagicMail } from '@/features/auth/hooks/useMagicMail';
+import { SendEmailSchema } from '@/shared/utils/validations';
+import z from 'zod';
 
 const LoginWithEmail = () => {
+   const { mutate: sendMail, isPending } = useMagicMail();
+
+   const handleSubmit = (data: z.infer<typeof SendEmailSchema>) => {
+      sendMail(data);
+   };
    return (
       <>
          <h5 className="h5">Введите Email</h5>
@@ -11,13 +21,14 @@ const LoginWithEmail = () => {
             На него будет отправлена ссылка для быстрого входа в аккаунт
          </p>
          <DynamicForm
-            schema={ForgotSchema}
+            schema={SendEmailSchema}
             fields={
                [{ name: 'email', label: 'Email', type: 'text' }] as FieldConfig<
-                  typeof ForgotSchema
+                  typeof SendEmailSchema
                >[]
             }
-            onSubmit={(data) => console.log(data)}
+            onSubmit={handleSubmit}
+            btnDisabled={isPending}
          ></DynamicForm>
       </>
    );

@@ -1,11 +1,12 @@
 'use client';
 
-import Loader from '@/components/common/loader';
-import DynamicForm, { FieldConfig } from '@/components/forms/DynamicForm';
-import ROUTES from '@/constants/routes';
-import { useChangePass } from '@/hooks/passwordReset/useChangePass';
-import { handleApiError } from '@/lib/handlers/axiosErrHandling';
-import { ResetPasswordSchema } from '@/lib/validations';
+import Loader from '@/features/loader/components/Loader';
+import DynamicForm, {
+   FieldConfig,
+} from '@/features/auth/components/forms/DynamicForm';
+import ROUTES from '@/shared/constants/routes';
+import { useChangePass } from '@/features/auth/hooks/useChangePass';
+import { ResetPasswordSchema } from '@/shared/utils/validations';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import z from 'zod';
@@ -33,7 +34,6 @@ const ResetPassword = () => {
 
    return (
       <>
-         <Loader isPending={isPending} />
          <h5 className="h5">Восстановление пароля</h5>
          <p className="textBody text-neutralBlack-500 text-center mb-4">
             Введите email чтобы сбросить пароль и получить доступ к аккаунту
@@ -51,6 +51,7 @@ const ResetPassword = () => {
                ] as FieldConfig<typeof ResetPasswordSchema>[]
             }
             onSubmit={handleSubmit}
+            btnDisabled={isPending}
          ></DynamicForm>
       </>
    );

@@ -1,17 +1,20 @@
 'use client';
 
-import AuthButton from '@/components/auth/AuthButton';
-import GoogleIco from '@/assets/icons/Google.svg';
-import MailIco from '@/assets/icons/Email.svg';
-import { SignUpSchema } from '@/lib/validations';
-import { DynamicForm, FieldConfig } from '@/components/forms/DynamicForm';
+import AuthButton from '@/features/auth/components/AuthButton';
+import GoogleIco from '@/public/icons/Google.svg';
+import MailIco from '@/public/icons/Email.svg';
+import { SignUpSchema } from '@/shared/utils/validations';
+import {
+   DynamicForm,
+   FieldConfig,
+} from '@/features/auth/components/forms/DynamicForm';
 import Link from 'next/link';
-import ROUTES from '@/constants/routes';
-import { useRegister } from '@/hooks/auth/useRegister';
+import ROUTES from '@/shared/constants/routes';
+import { useRegister } from '@/features/auth/hooks/useRegister';
 
 import z from 'zod';
-import { handleApiError } from '@/lib/handlers/axiosErrHandling';
-import Loader from '@/components/common/loader';
+import { handleApiError } from '@/shared/handlers/axiosErrHandling';
+import Loader from '@/features/loader/components/Loader';
 
 const Auth = () => {
    const { mutate: registrate, isPending } = useRegister();
@@ -27,13 +30,13 @@ const Auth = () => {
 
    return (
       <>
-         <Loader isPending={isPending} />
          <div className="w-full flex flex-col gap-4">
             <AuthButton
                icon={GoogleIco}
                alt="sign in with google"
                width={16}
                height={16}
+               isLink={ROUTES.auth.googleOAuth}
             >
                Войти через Google
             </AuthButton>
@@ -42,6 +45,7 @@ const Auth = () => {
                alt="sign in with email"
                width={16}
                height={16}
+               isLink={ROUTES.auth.loginWithEmail}
             >
                Войти через email
             </AuthButton>
@@ -57,7 +61,11 @@ const Auth = () => {
                [
                   { name: 'name', label: 'Имя', type: 'text' },
                   { name: 'email', label: 'Email', type: 'text' },
-                  { name: 'username', label: 'Псевдоним', type: 'text' },
+                  {
+                     name: 'username',
+                     label: 'Уникальное имя пользователя',
+                     type: 'text',
+                  },
                   { name: 'password', label: 'Пароль', type: 'password' },
                   {
                      name: 'confirmPassword',
@@ -68,6 +76,7 @@ const Auth = () => {
             }
             onSubmit={handleSubmit}
             btnText="Продолжить"
+            btnDisabled={isPending}
          />
          <div className="mt-2 texBody text-neutralBlack-600">
             Есть аккаунт?{' '}

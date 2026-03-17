@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import Check from '@/assets/icons/Check.svg';
+import Check from '@/public/icons/Check.svg';
 
 const CheckInbox = () => {
    return (

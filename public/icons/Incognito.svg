@@ -1,0 +1,9 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#dcdcdc"/>
+  
+  <!-- голова -->
+  <circle cx="256" cy="225" r="98" fill="#9e9e9e"/>
+  
+  <!-- плечи / тело -->
+  <path d="M0 512 C80 320 432 320 512 512 Z" fill="#9e9e9e"/>
+</svg>

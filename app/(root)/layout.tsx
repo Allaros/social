@@ -1,24 +1,23 @@
 'use client';
 
-import Loader from '@/components/common/loader';
-import ROUTES from '@/constants/routes';
-import { useAuth } from '@/hooks/auth/useAuth';
-import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
+import GlobalDropHandler from '@/shared/components/GlobalDropHandler';
+import RootHeader from '@/features/feed/components/navigation/RootHeader';
+import AuthGuard from '@/features/auth/providers/AuthGuard';
+import UserCard from '@/features/user/components/cards/UserCard';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
-   const { isUnauthenticated, isLoading } = useAuth();
-   const router = useRouter();
-
-   useEffect(() => {
-      if (isUnauthenticated) {
-         router.replace(ROUTES.auth.signIn);
-      }
-   }, [isUnauthenticated]);
-
-   if (isLoading) return <Loader isPending={isLoading} />;
-   if (isUnauthenticated) return null;
-   return <div>{children}</div>;
+   return (
+      <AuthGuard>
+         <div>
+            <RootHeader />
+            <GlobalDropHandler />
+            <div className="grid grid-cols-[3fr_9fr] gap-8 pt-32">
+               <UserCard />
+               {children}
+            </div>
+         </div>
+      </AuthGuard>
+   );
 };
 
 export default MainLayout;
