@@ -3,11 +3,13 @@
 import { ProfileTabsList } from '@/features/profile/constants/ProfileTabsList';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-const ProfileTabs = () => {
+const ProfileTabs = ({ isOwner }: { isOwner?: boolean }) => {
    const router = useRouter();
    const searchParams = useSearchParams();
 
    const currentTab = searchParams.get('tab') ?? 'posts';
+
+   if (!isOwner) return null;
 
    return (
       <div className="flex items-center gap-4 px-11 py-2">

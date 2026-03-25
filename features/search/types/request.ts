@@ -1,4 +1,4 @@
-import { SearchSections } from './responce';
+import { SearchSections } from './response';
 
 export interface IDropdownSearch {
    query: string;

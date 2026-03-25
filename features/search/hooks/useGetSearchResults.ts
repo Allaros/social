@@ -13,5 +13,6 @@ export const useGetSearchResults = ({
       queryFn: ({ signal }) =>
          searchApi.searchResults({ query, limit, page, type }, signal),
       staleTime: 60 * 1000,
+      placeholderData: (prev) => prev,
    });
 };

@@ -34,7 +34,7 @@ export default function RootLayout({
          >
             <MainProvider>
                <SmoothScroll />
-               <div className="max-w-7xl mx-auto px-6 box-content pb-10">
+               <div className="max-w-7xl mx-auto px-6 max-md:px-0 box-content pb-10">
                   {children}
                </div>
                <Toaster />

@@ -1,5 +1,5 @@
 'use client';
-import { SearchSections, sectionOrder, sectionTitles } from '../types/responce';
+import { SearchSections, sectionOrder, sectionTitles } from '../types/response';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 
 const SearchTabs = ({ type }: { type: SearchSections }) => {

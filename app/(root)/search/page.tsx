@@ -1,10 +1,14 @@
 'use client';
 
+import ProfileSearchItem from '@/features/search/components/searchItems/ProfileSearchItem';
+import SearchPagination from '@/features/search/components/SearchPagination';
 import SearchTabs from '@/features/search/components/SearchTabs';
 import { useGetSearchResults } from '@/features/search/hooks/useGetSearchResults';
-import { SearchSections } from '@/features/search/types/responce';
+import {
+   ProfileItemResponse,
+   SearchSections,
+} from '@/features/search/types/response';
 import { useSearchParams } from 'next/navigation';
-import { type } from 'os';
 
 const SearchPage = () => {
    const searchParams = useSearchParams();
@@ -20,11 +24,28 @@ const SearchPage = () => {
       query,
       type,
    });
+   if (!data) return null;
 
-   console.log(data);
+   const { data: results, total } = data;
+
    return (
       <div className="card">
          <SearchTabs type={type as SearchSections} />
+         <SearchPagination total={total} limit={limit} page={page} />
+         <div className="flex flex-col my-6 max-md:my-4">
+            {type === 'profiles' &&
+               results.map((item: ProfileItemResponse, i: number) => (
+                  <ProfileSearchItem
+                     key={i}
+                     id={item.id}
+                     name={item.name}
+                     username={item.username}
+                     avatarUrl={item.avatarUrl}
+                     bio={item.bio}
+                  />
+               ))}
+         </div>
+         <SearchPagination total={total} limit={limit} page={page} />
       </div>
    );
 };

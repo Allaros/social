@@ -6,4 +6,14 @@ export const profileApi = {
 
       return data;
    },
+
+   updateProfile: async (formData: FormData) => {
+      const { data } = await api.put('profile/update', formData, {
+         headers: {
+            'Content-Type': 'multipart/form-data',
+         },
+      });
+
+      return data;
+   },
 };

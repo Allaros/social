@@ -1,11 +1,19 @@
-import ProfileCard from '@/features/profile/components/cards/ProfileCard';
-import SettingsCard from '@/features/profile/components/cards/SettingsCard';
+import ProfileView from '@/features/profile/components/ProfileView';
+import { TabsType } from '@/features/profile/types/TabsType';
 
-const ProfilePage = () => {
+const ProfilePage = async ({
+   params,
+   searchParams,
+}: {
+   params: { username: string };
+   searchParams: { tab: TabsType };
+}) => {
+   const username = (await params).username;
+   const tab = (await searchParams).tab;
+
    return (
       <div className="">
-         <ProfileCard />
-         <SettingsCard />
+         <ProfileView username={username} tab={tab} />
       </div>
    );
 };

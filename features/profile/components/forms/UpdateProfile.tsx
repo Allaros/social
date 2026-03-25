@@ -11,11 +11,9 @@ import {
    FormItem,
    FormMessage,
 } from '@/shared/components/ui/form';
-import ImageUploader from './CreatePost/ImageUploader';
-import { useState } from 'react';
-import { Input } from '@/shared/components/ui/input';
-import { Textarea } from '@/shared/components/ui/textarea';
+import ImageUploader from '../../../post/components/forms/CreatePost/MediaUploader';
 import UploadIco from '@/public/icons/Upload.svg';
+import { useUpdateProfile } from '../../hooks/useUpdateProfile';
 
 type FormValues = z.infer<typeof UpdateProfileSchema>;
 type TextField = Exclude<keyof FormValues, 'image'>;
@@ -28,22 +26,42 @@ const textPlaceholders: Record<TextField, string> = {
    bio: 'Ваш статус',
 };
 
-const UpdateProfile = () => {
-   const [images, setImages] = useState<File[]>([]);
+const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+
+const UpdateProfile = ({ username }: { username: string }) => {
+   const { mutate: updateProfile } = useUpdateProfile(username);
    const form = useForm<FormValues>({
       resolver: zodResolver(UpdateProfileSchema),
       mode: 'onSubmit',
       reValidateMode: 'onSubmit',
+      defaultValues: {
+         bio: '',
+         name: '',
+         username: '',
+         image: undefined,
+      },
    });
 
    const onSubmit = (data: FormValues) => {
-      console.log(data);
-      const payload = {
-         ...data,
-         image: images[0],
-      };
+      const formData = new FormData();
+      if (data.name) {
+         formData.append('name', data.name);
+      }
+      if (data.username) {
+         formData.append('username', data.username);
+      }
+      if (data.bio) {
+         formData.append('bio', data.bio);
+      }
 
-      console.log(payload);
+      if (data.image) {
+         formData.append('image', data.image.file);
+      }
+      updateProfile(formData, {
+         onSuccess: () => {
+            form.reset();
+         },
+      });
    };
 
    return (
@@ -61,11 +79,12 @@ const UpdateProfile = () => {
                         <ImageUploader
                            text="Выберите изображение профиля"
                            icon={UploadIco}
-                           maxImages={1}
-                           maxSizeMb={10}
+                           maxFiles={1}
+                           maxImageMb={10}
                            className="border-2 border-dashed border-neutralWhite-400 py-3 px-5 text-neutralBlack-600 textBody"
-                           images={field.value ? [field.value] : []}
+                           value={field.value ? [field.value] : []}
                            onChange={(files) => field.onChange(files[0])}
+                           allowedTypes={allowedTypes}
                         />
                      </FormControl>
 
@@ -95,10 +114,17 @@ const UpdateProfile = () => {
                               />
                            )}
                         </FormControl>
+                        <FormMessage></FormMessage>
                      </FormItem>
                   )}
                />
             ))}
+            <button
+               type="submit"
+               className="textBody-medium text-neutralWhite-100 bg-neutralBlack-900 hover:bg-neutralBlack-850 transition-colors cursor-pointer rounded-sm py-2 px-6"
+            >
+               Сохранить
+            </button>
          </form>
       </Form>
    );

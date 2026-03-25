@@ -4,14 +4,14 @@ import { useGetProfile } from '@/features/profile/hooks/useGetProfile';
 import { useParams } from 'next/navigation';
 import Loader from '@/features/loader/components/Loader';
 
-const ProfileNums = () => {
-   const params = useParams();
-   const slug = params.slug as string;
-
-   const { data: profile, isLoading, isError } = useGetProfile(slug);
-
+const ProfileNums = ({
+   profile,
+   isError,
+}: {
+   profile?: ProfileResponce;
+   isError: boolean;
+}) => {
    if (isError) return <div>Ошибка загрузки профиля</div>;
-   if (isLoading) return <Loader isPending />;
    if (!profile) return null;
 
    const nums = [

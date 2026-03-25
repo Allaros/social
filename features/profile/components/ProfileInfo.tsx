@@ -1,16 +1,15 @@
 'use client';
 
-import { useGetProfile } from '@/features/profile/hooks/useGetProfile';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
 import UnknownImg from '@/public/icons/Incognito.svg';
 import { Skeleton } from '@/shared/components/ui/skeleton';
-const ProfileInfo = () => {
-   const params = useParams();
-   const username = params.username as string;
-
-   const { data: profile, isError } = useGetProfile(username);
-
+const ProfileInfo = ({
+   profile,
+   isError,
+}: {
+   profile?: ProfileResponce;
+   isError: boolean;
+}) => {
    if (isError) return <div>Ошибка загрузки профиля</div>;
 
    return (
@@ -37,7 +36,7 @@ const ProfileInfo = () => {
                   {!profile ? (
                      <Skeleton className="h-4 w-40" />
                   ) : (
-                     profile.username
+                     `@${profile.username}`
                   )}
                </span>
             </div>

@@ -3,13 +3,13 @@
 import { useProfile } from '@/features/profile/hooks/useProfile';
 import Image from 'next/image';
 import Unknown from '@/public/icons/Incognito.svg';
-import CreatePostForm from '@/features/profile/components/forms/CreatePost';
+import CreatePostForm from '@/features/post/components/forms/CreatePost';
 
 const CreatePost = () => {
    const profile = useProfile();
    return (
       <div className="bg-neutralWhite-100 border border-neutralWhite-400 rounded-sm py-7 px-7 flex items-start gap-4">
-         <div className="pt-3">
+         <div className="pt-3 max-md:hidden">
             <Image
                src={profile?.avatarUrl ?? Unknown}
                alt="User avatar"

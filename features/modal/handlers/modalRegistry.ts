@@ -1,5 +1,6 @@
 import { ModalType } from '../constants/modals';
 import ConfirmModal from '../modals/ConfirmModal';
+import PreviewModal from '../modals/PreviewModal';
 import { ModalPayloadMap } from '../types/modalPayload';
 
 export const modalRegistry: {
@@ -9,4 +10,5 @@ export const modalRegistry: {
    }>;
 } = {
    confirm: ConfirmModal,
+   preview: PreviewModal,
 };

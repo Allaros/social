@@ -8,6 +8,14 @@ import { createPortal } from 'react-dom';
 import { ModalPayloadMap } from '../types/modalPayload';
 import { AnimatePresence } from 'framer-motion';
 
+function renderModal(modal: ModalState, close: () => void) {
+   if (modal.type === null) return null;
+
+   const Component = modalRegistry[modal.type];
+
+   return <Component payload={modal.payload as any} close={close} />;
+}
+
 type ModalState =
    | { type: null }
    | {
@@ -45,7 +53,7 @@ const ModalsProvider = ({ children }: { children: React.ReactNode }) => {
       type: T,
       payload: ModalPayloadMap[T]
    ) => {
-      setModal({ type, payload });
+      setModal({ type, payload } as ModalState);
    };
 
    const closeModal = () => {
@@ -62,13 +70,7 @@ const ModalsProvider = ({ children }: { children: React.ReactNode }) => {
          {mounted &&
             createPortal(
                <AnimatePresence mode="wait">
-                  {modal.type !== null && ModalComponent && (
-                     <ModalComponent
-                        key={modal.type}
-                        payload={modal.payload}
-                        close={closeModal}
-                     />
-                  )}
+                  {renderModal(modal, closeModal)}
                </AnimatePresence>,
                document.body
             )}

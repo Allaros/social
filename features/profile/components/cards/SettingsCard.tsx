@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import SettingsTabs from '@/features/profile/components/SettingsTabs';
+import SettingsTabs from '@/features/profile/components/navigation/SettingsTabs';
 import UpdateProfile from '@/features/profile/components/forms/UpdateProfile';
 import AccountDelete from '@/features/profile/components/AccountDelete';
 
 export type SettingsTab = 'general' | 'account';
 
-const SettingsCard = () => {
+const SettingsCard = ({ username }: { username: string }) => {
    const [currentTab, setCurrentTab] = useState<SettingsTab>('general');
    return (
       <div className="card">
@@ -20,7 +20,9 @@ const SettingsCard = () => {
                <SettingsTabs changeTab={setCurrentTab}></SettingsTabs>
             </div>
             <div className="py-10 px-14">
-               {currentTab === 'general' && <UpdateProfile />}
+               {currentTab === 'general' && (
+                  <UpdateProfile username={username} />
+               )}
                {currentTab === 'account' && <AccountDelete />}
             </div>
          </div>

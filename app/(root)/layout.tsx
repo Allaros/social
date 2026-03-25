@@ -11,7 +11,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
          <div>
             <RootHeader />
             <GlobalDropHandler />
-            <div className="grid grid-cols-[3fr_9fr] gap-8 pt-32">
+            <div className="grid grid-cols-[3fr_9fr] gap-8 pt-32 max-md:grid-cols-1 max-md:pt-19">
                <UserCard />
                {children}
             </div>

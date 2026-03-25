@@ -46,6 +46,7 @@ api.interceptors.response.use(
 
       if (url.includes('/auth/refresh')) {
          window.location.href = ROUTES.auth.signIn;
+
          return Promise.reject(error);
       }
 
@@ -63,6 +64,7 @@ api.interceptors.response.use(
 
       if (originalRequest._retry) {
          window.location.href = ROUTES.auth.signIn;
+
          return Promise.reject(error);
       }
 
@@ -87,7 +89,6 @@ api.interceptors.response.use(
          return api(originalRequest);
       } catch (refreshError) {
          processQueue(refreshError);
-
          window.location.href = ROUTES.auth.signIn;
 
          return Promise.reject(refreshError);

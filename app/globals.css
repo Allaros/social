@@ -196,3 +196,31 @@ body {
 .tiptap ol {
    @apply list-decimal pl-6;
 }
+
+.addFriend {
+   position: relative;
+   width: 20px;
+   height: 20px;
+}
+
+.addFriend::before,
+.addFriend::after {
+   content: '';
+   display: block;
+   background-color: #fff;
+   border-radius: 2px;
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+}
+
+.addFriend::before {
+   width: 12px;
+   height: 2px;
+}
+
+.addFriend::after {
+   width: 2px;
+   height: 12px;
+}

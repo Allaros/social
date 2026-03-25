@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useDropdownSearch } from '../hooks/useDropdownSearch';
-import { DropdownItem, sectionOrder, sectionTitles } from '../types/responce';
+import { DropdownItem, sectionOrder, sectionTitles } from '../types/response';
 import qs from 'query-string';
 
 const DropdownMenu = ({
