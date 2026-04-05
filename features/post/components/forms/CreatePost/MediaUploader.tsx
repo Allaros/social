@@ -9,7 +9,7 @@ import { MODALS } from '@/features/modal/constants/modals';
 export type MediaItem = {
    file: File;
    preview: string;
-   type: 'image' | 'video';
+   type: PostMediaType;
 };
 
 interface Props {

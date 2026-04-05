@@ -1,9 +1,10 @@
 import { api } from '@/shared/api/axios';
-import { PostResponce } from '../types/post.responce';
 
 export const postApi = {
+   //================================== Post Module ==============================================
+
    createPost: async (formData: FormData) => {
-      const { data } = await api.post('posts/create', formData, {
+      const { data } = await api.post('posts', formData, {
          headers: {
             'Content-Type': 'multipart/form-data',
          },
@@ -12,33 +13,46 @@ export const postApi = {
       return data;
    },
 
-   getAll: async (): Promise<PostResponce[]> => {
-      const { data } = await api.get('posts');
-
-      return data;
-   },
-
-   getMyPosts: async (): Promise<PostResponce[]> => {
-      const { data } = await api.get('posts/my');
-      return data;
-   },
-
    hardDeletePost: async (postId: number) => {
-      const { data } = await api.delete(`posts/hard-delete/${postId}`);
+      const { data } = await api.delete(`posts/${postId}/hard`);
       return data;
    },
+
+   softDelete: async (postId: number) => {
+      const { data } = await api.delete(`posts/${postId}`);
+      return data;
+   },
+
+   recoverPost: async (postId: number) => {
+      const { data } = await api.put(`posts/${postId}`);
+      return data;
+   },
+
+   editPost: async (postId: number, formData: FormData) => {
+      const { data } = await api.put(`posts/edit/${postId}`, formData);
+      return data;
+   },
+
+   //================================== Saving Module ==============================================
 
    savePost: async (postId: number) => {
-      const { data } = await api.post(`posts/save/${postId}`);
+      const { data } = await api.post(`save/${postId}`);
       return data;
    },
    unsavePost: async (postId: number) => {
-      const { data } = await api.delete(`posts/save/${postId}`);
+      const { data } = await api.delete(`save/${postId}`);
       return data;
    },
 
-   getSavedPosts: async () => {
-      const { data } = await api.get(`posts/save`);
+   //================================== Like Module ==============================================
+
+   likePost: async (postId: number) => {
+      const { data } = await api.post(`like/${postId}`);
+      return data;
+   },
+
+   unlikePost: async (postId: number) => {
+      const { data } = await api.delete(`like/${postId}`);
       return data;
    },
 };

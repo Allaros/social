@@ -8,6 +8,7 @@ import { List, Italic } from 'lucide-react';
 interface Props {
    value: string;
    onChange: (value: string) => void;
+   placeholder: string;
 }
 
 interface ToolbarItem {
@@ -30,19 +31,16 @@ const toolbarConfig: ToolbarItem[] = [
    },
 ];
 
-const PostEditor = ({ value, onChange }: Props) => {
+const PostEditor = ({ value, onChange, placeholder }: Props) => {
    const [showToolbar, setShowToolbar] = useState(false);
    const editor = useEditor({
-      extensions: [
-         StarterKit,
-         Placeholder.configure({ placeholder: 'Что сегодня на уме?' }),
-      ],
+      extensions: [StarterKit, Placeholder.configure({ placeholder })],
       content: value,
       immediatelyRender: false,
       editorProps: {
          attributes: {
             class: 'break-words outline-none break-all',
-            'data-placeholder': 'Что сегодня на уме?',
+            'data-placeholder': placeholder,
          },
       },
       onUpdate({ editor }) {
@@ -76,7 +74,7 @@ const PostEditor = ({ value, onChange }: Props) => {
          </div>
          <EditorContent
             editor={editor}
-            className="tiptap textBody py-3.5 px-1 min-h-14 break-all border-b bg-neutralWhite-100 border-neutralWhite-400"
+            className="tiptap rounded-sm textBody py-3.5 px-1 min-h-14 break-all border-b bg-neutralWhite-100 border-neutralWhite-400"
          />
       </div>
    );

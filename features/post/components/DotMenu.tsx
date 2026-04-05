@@ -2,11 +2,12 @@
 import { useState } from 'react';
 import DotsIco from '@/public/icons/More.svg';
 import Image from 'next/image';
-import CustomButton from '@/shared/components/CustomButton';
 import { usePostActions } from '../hooks/usePostActions';
 import { useModal } from '@/features/modal/hooks/useModal';
 import { ConfirmPayload } from '@/features/modal/types/modalPayload';
 import { MODALS } from '@/features/modal/constants/modals';
+import { ConfirmTextPayload } from '../constants/confirmTextPayload';
+import { PostResponse } from '../types/post.responce';
 
 type PostAction = {
    label: string;
@@ -15,46 +16,57 @@ type PostAction = {
 };
 
 const DotMenu = ({
-   postId,
-   canDelete,
-   canEdit,
-   canReport,
+   post,
+   permissions,
 }: {
-   postId: number;
-   canDelete: boolean;
-   canEdit: boolean;
-   canReport: boolean;
+   post: PostResponse;
+   permissions: {
+      canDelete: boolean;
+      canEdit: boolean;
+      canReport: boolean;
+   };
 }) => {
+   const { canDelete, canEdit, canReport } = permissions;
    const { openModal } = useModal();
    const [visible, setVisible] = useState(false);
-   const { hardDelete } = usePostActions();
+   const { hardDelete, softDelete, savePost, unsavePost } = usePostActions();
 
    const confirmHardDeletePayload: ConfirmPayload = {
-      onConfirm: () => hardDelete.mutate(postId),
-      title: 'Удалить пост навсегда?',
-      confirmText: 'Удалить пост навсегда',
-      cancelText: 'Отменить',
-      description:
-         'Это удалит пост из нашей базы данных без возможности восстановления.',
-      variant: 'destructive',
+      onConfirm: () => hardDelete.mutate(post.id),
+      ...ConfirmTextPayload.hardDelete,
+   };
+
+   const confirmSoftDeletePayload: ConfirmPayload = {
+      onConfirm: () => hardDelete.mutate(post.id),
+      ...ConfirmTextPayload.hardDelete,
    };
 
    const actions: PostAction[] = [
-      // {
-      //    label: 'Сохранить',
-      //    action: () => savePost.mutate(postId),
-      //    visible: () => !isAuthor,
-      // },
+      {
+         label: 'Сохранить',
+         action: () => savePost.mutate(post.id),
+         visible: !post.isSaved,
+      },
+      {
+         label: 'Удалить из избранного',
+         action: () => unsavePost.mutate(post.id),
+         visible: post.isSaved,
+      },
+      {
+         label: 'Редактировать',
+         action: () => openModal(MODALS.POST_EDIT, { post }),
+         visible: canEdit,
+      },
       // {
       //    label: 'Пожаловаться',
       //    action: () => reportPost.mutate(postId),
       //    visible: () => !isAuthor,
       // },
-      // {
-      //    label: 'Удалить',
-      //    action: () => softDelete.mutate(postId),
-      //    visible: () => isAuthor,
-      // },
+      {
+         label: 'Удалить',
+         action: () => softDelete.mutate(post.id),
+         visible: canDelete,
+      },
       {
          label: 'Удалить навсегда',
          action: () => openModal(MODALS.CONFIRM, confirmHardDeletePayload),
@@ -82,7 +94,7 @@ const DotMenu = ({
                   return (
                      <button
                         key={button.label}
-                        onClick={() => button.action(postId)}
+                        onClick={() => button.action(post.id)}
                         className="hover:bg-neutralWhite-400 cursor-pointer px-4 py-2 w-full text-left"
                      >
                         {button.label}

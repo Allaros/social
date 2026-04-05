@@ -7,13 +7,15 @@ import SettingsCard from '../cards/SettingsCard';
 const TabsMapper = ({
    type,
    username,
+   profileId,
 }: {
    type: TabsType;
    username: string;
+   profileId?: number;
 }) => {
    switch (type) {
       case 'posts': {
-         return <PostsCard />;
+         return <PostsCard id={profileId} username={username} />;
       }
       case 'saved-posts': {
          return <FavouritesCard />;
@@ -22,7 +24,7 @@ const TabsMapper = ({
          return <SettingsCard username={username} />;
       }
       default:
-         return <PostsCard />;
+         return <PostsCard id={profileId} username={username} />;
    }
 };
 

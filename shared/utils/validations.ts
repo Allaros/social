@@ -136,7 +136,9 @@ const stripHtml = (html: string) => html.replace(/<[^>]*>/g, '').trim();
 
 export const CreatePostSchema = z
    .object({
-      content: z.string(),
+      content: z.string().max(5000, {
+         error: 'Содержимое поста не может превышать 5000 символов',
+      }),
       media: z.array(z.any()),
       allowComments: z.boolean(),
       visibility: z.enum(['public', 'followers', 'private']),
@@ -154,3 +156,31 @@ export const CreatePostSchema = z
          path: ['content'],
       }
    );
+
+const ExistingMediaSchema = z.object({
+   kind: z.literal('existing'),
+   id: z.number(),
+   url: z.string(),
+   type: z.enum(['image', 'video']),
+});
+
+const NewMediaSchema = z.object({
+   kind: z.literal('new'),
+   file: z.instanceof(File),
+   preview: z.string(),
+   type: z.enum(['image', 'video']),
+});
+
+export const EditableMediaSchema = z.union([
+   ExistingMediaSchema,
+   NewMediaSchema,
+]);
+
+export const UpdatePostSchema = z.object({
+   content: z.string().max(5000, {
+      error: 'Содержимое поста не может превышать 5000 символов',
+   }),
+   media: z.array(EditableMediaSchema).max(10, 'Максимум 10 файлов'),
+   allowComments: z.boolean(),
+   visibility: z.enum(['public', 'followers', 'private']),
+});

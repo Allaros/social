@@ -1,17 +1,10 @@
 'use client';
 
-import { Controller, useForm, useWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import PostEditor from './PostEditor';
 import ImageUploader, { MediaItem } from './MediaUploader';
 import { useCreatePost } from '@/features/post/hooks/useCreatePost';
-import {
-   Select,
-   SelectContent,
-   SelectItem,
-   SelectTrigger,
-   SelectValue,
-} from '@/shared/components/ui/select';
-import { Checkbox } from '@/shared/components/ui/checkbox';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreatePostSchema } from '@/shared/utils/validations';
 import {
@@ -21,14 +14,12 @@ import {
    FormItem,
    FormMessage,
 } from '@/shared/components/ui/form';
-import { Button } from '@/shared/components/ui/button';
-
-interface FormData {
-   content: string;
-   media: MediaItem[];
-   allowComments: boolean;
-   visibility: 'public' | 'followers' | 'private';
-}
+import Image from 'next/image';
+import SettingsIco from '@/public/icons/Settings.svg';
+import { useModal } from '@/features/modal/hooks/useModal';
+import { MODALS } from '@/features/modal/constants/modals';
+import z from 'zod';
+import { CreatePostFormData } from '@/features/post/types/post.interface';
 
 const allowedTypes = [
    'image/jpeg',
@@ -39,7 +30,8 @@ const allowedTypes = [
 ];
 
 const CreatePostForm = () => {
-   const form = useForm<FormData>({
+   const { openModal } = useModal();
+   const form = useForm<CreatePostFormData>({
       resolver: zodResolver(CreatePostSchema),
       defaultValues: {
          content: '',
@@ -51,7 +43,7 @@ const CreatePostForm = () => {
 
    const { mutate: createPost, isPending } = useCreatePost();
 
-   const onSubmit = (data: FormData) => {
+   const onSubmit = (data: CreatePostFormData) => {
       const formData = new FormData();
 
       if (data.content.trim().length >= 5) {
@@ -64,6 +56,8 @@ const CreatePostForm = () => {
 
       formData.append('allowComments', String(data.allowComments));
       formData.append('visibility', data.visibility);
+
+      console.log(...formData);
 
       createPost(formData);
       form.reset();
@@ -83,93 +77,55 @@ const CreatePostForm = () => {
                         <PostEditor
                            value={field.value}
                            onChange={field.onChange}
+                           placeholder="Что сегодня на уме?"
                         />
                      </FormControl>
+                     <FormMessage />
                   </FormItem>
                )}
             />
 
-            <div className="flex flex-col gap-4">
+            <div className="relative">
                <FormField
                   control={form.control}
-                  name="allowComments"
+                  name="media"
                   render={({ field }) => (
                      <FormItem>
                         <FormControl>
-                           <label className="flex items-center gap-2 cursor-pointer">
-                              <Checkbox
-                                 checked={!field.value}
-                                 onCheckedChange={(checked) =>
-                                    field.onChange(!(checked === true))
-                                 }
-                                 className="cursor-pointer rounded-[4px]"
-                              />
-                              <span className="textBody">
-                                 Запретить комментарии
-                              </span>
-                           </label>
-                        </FormControl>
-                     </FormItem>
-                  )}
-               />
-
-               <FormField
-                  control={form.control}
-                  name="visibility"
-                  render={({ field }) => (
-                     <FormItem>
-                        <FormControl className="textBody">
-                           <Select
+                           <ImageUploader
                               value={field.value}
-                              onValueChange={field.onChange}
-                           >
-                              <SelectTrigger>
-                                 <SelectValue placeholder="Выберите видимость" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                 <SelectItem value="public">
-                                    Виден всем
-                                 </SelectItem>
-                                 <SelectItem value="followers">
-                                    Только подписчикам
-                                 </SelectItem>
-                                 <SelectItem value="private">
-                                    Только мне
-                                 </SelectItem>
-                              </SelectContent>
-                           </Select>
+                              onChange={field.onChange}
+                              allowedTypes={allowedTypes}
+                              maxVideoMb={20}
+                              maxImageMb={10}
+                              maxFiles={10}
+                           />
                         </FormControl>
                      </FormItem>
                   )}
                />
+               <div className="absolute top-0 right-0 z-10 flex items-center gap-2">
+                  <button
+                     type="button"
+                     onClick={() => openModal(MODALS.POST_SETTINGS, { form })}
+                     className="cursor-pointer p-1 hover:bg-neutralWhite-400 transition-colors rounded-full"
+                  >
+                     <Image
+                        src={SettingsIco}
+                        alt="settings"
+                        width={20}
+                        height={20}
+                     />
+                  </button>
+                  <button
+                     className="bg-primary-800 hover:bg-primary-900 cursor-pointer rounded-[100px] text-neutralWhite-100 textBody-medium px-5 py-1"
+                     type="submit"
+                     disabled={isPending}
+                  >
+                     Выложить
+                  </button>
+               </div>
             </div>
-
-            <FormField
-               control={form.control}
-               name="media"
-               render={({ field }) => (
-                  <FormItem>
-                     <FormControl>
-                        <ImageUploader
-                           value={field.value}
-                           onChange={field.onChange}
-                           allowedTypes={allowedTypes}
-                           maxVideoMb={20}
-                           maxImageMb={10}
-                           maxFiles={10}
-                        />
-                     </FormControl>
-                  </FormItem>
-               )}
-            />
-
-            <Button
-               className="bg-primary-800 hover:bg-primary-900 cursor-pointer"
-               type="submit"
-               disabled={isPending}
-            >
-               Post
-            </Button>
          </form>
       </Form>
    );

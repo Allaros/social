@@ -7,19 +7,19 @@ export const usePostActions = () => {
    const { hideLoader, showLoader } = useLoader();
    const queryClient = useQueryClient();
 
-   //    const softDelete = useMutation({
-   //       mutationFn: (postId: number) => postApi.softDelete(postId),
-   //       onMutate: () => {
-   //          showLoader();
-   //       },
+   const softDelete = useMutation({
+      mutationFn: (postId: number) => postApi.softDelete(postId),
+      onMutate: () => {
+         showLoader();
+      },
 
-   //       onSettled: () => {
-   //          hideLoader();
-   //       },
-   //       onSuccess: () => {
-   //          queryClient.invalidateQueries({ queryKey: ['posts', 'my'] });
-   //       },
-   //    });
+      onSettled: () => {
+         hideLoader();
+      },
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: ['posts', 'my'] });
+      },
+   });
 
    const hardDelete = useMutation({
       mutationFn: (postId: number) => postApi.hardDeletePost(postId),
@@ -31,7 +31,7 @@ export const usePostActions = () => {
          hideLoader();
       },
       onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: ['posts'] });
+         queryClient.invalidateQueries({ queryKey: ['feed'] });
       },
    });
 
@@ -46,6 +46,7 @@ export const usePostActions = () => {
       mutationFn: (postId: number) => postApi.unsavePost(postId),
       onSuccess: () => {
          toast.success('Пост удален из избранного');
+         queryClient.invalidateQueries({ queryKey: ['saved'] });
       },
    });
 
@@ -55,6 +56,7 @@ export const usePostActions = () => {
 
    return {
       hardDelete,
+      softDelete,
       savePost,
       unsavePost,
    };

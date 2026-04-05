@@ -1,24 +1,33 @@
-export interface PostResponce {
+export interface PostResponse {
    id: number;
    content: string;
    createdAt: Date;
+   allowComments: boolean;
+   visibility: 'public' | 'followers' | 'private';
+
+   author: PostAuthor;
+
+   media: PostMedia[];
+
    likesCount: number;
    commentsCount: number;
-   viewsCount: string;
-   repostsCount: string;
-   author: PostAuthor;
-   media: PostMedia[];
+   repostsCount: number;
+   viewsCount: number;
+
+   isLiked: boolean;
+   isSaved: boolean;
+   isOwned: boolean;
 }
 
 export interface PostAuthor {
    id: number;
    username: string;
    name: string;
-   avatarUrl: string;
+   avatarUrl?: string;
 }
 
 export interface PostMedia {
    id: number;
    url: string;
-   type: 'image' | 'video';
+   type: PostMediaType;
 }

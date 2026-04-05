@@ -20,7 +20,7 @@ export const useCreatePost = () => {
       },
 
       onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: ['posts'] });
+         queryClient.invalidateQueries({ queryKey: ['feed'] });
       },
       onError: (err) => {
          const normalized = normalizeApiError(err);

@@ -4,7 +4,6 @@ import { useGetProfile } from '../hooks/useGetProfile';
 import { TabsType } from '../types/TabsType';
 import PostsCard from './cards/PostsCard';
 import ProfileCard from './cards/ProfileCard';
-import SettingsCard from './cards/SettingsCard';
 import TabsMapper from './navigation/TabsMapper';
 
 const ProfileView = ({
@@ -20,9 +19,13 @@ const ProfileView = ({
       <>
          <ProfileCard profile={profile} isError={isError} />
          {profile && profile.isOwner ? (
-            <TabsMapper type={tab} username={username} />
+            <TabsMapper
+               type={tab}
+               username={username}
+               profileId={profile?.id}
+            />
          ) : (
-            <PostsCard />
+            <PostsCard username={username} id={profile?.id} />
          )}
       </>
    );

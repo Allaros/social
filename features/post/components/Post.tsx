@@ -1,30 +1,26 @@
-import { PostResponce } from '../types/post.responce';
 import AuthorBlock from './AuthorBlock';
 import DOMPurify from 'dompurify';
 import MediaView from './MediaView';
+import { PostResponse } from '../types/post.responce';
+import ActionBlock from './ActionBlock';
 
 const Post = ({
    post,
-   userProfileId,
+   editable,
 }: {
-   post: PostResponce;
-   userProfileId?: number;
+   post: PostResponse;
+   editable?: boolean;
 }) => {
    const permissions = {
-      canDelete: userProfileId === post.author.id,
-      canEdit: userProfileId === post.author.id,
-      canReport: userProfileId !== post.author.id,
+      canDelete: post.isOwned,
+      canEdit: editable ?? false,
+      canReport: !post.isOwned,
    };
 
    const safeHtml = DOMPurify.sanitize(post.content);
    return (
       <div className="card  py-6">
-         <AuthorBlock
-            permissions={permissions}
-            author={post.author}
-            createdAt={post.createdAt}
-            postId={post.id}
-         />
+         <AuthorBlock permissions={permissions} post={post} />
          <div className="pt-6 px-8">
             <div
                className="textBody mb-6"
@@ -32,6 +28,7 @@ const Post = ({
             ></div>
             {post.media.length !== 0 && <MediaView media={post.media} />}
          </div>
+         <ActionBlock post={post} />
       </div>
    );
 };

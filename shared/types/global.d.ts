@@ -36,3 +36,5 @@ interface IConfirmMagic {
 interface IGetProfile {
    username: string;
 }
+
+type PostMediaType = 'image' | 'video';

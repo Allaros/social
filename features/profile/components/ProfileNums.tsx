@@ -21,11 +21,11 @@ const ProfileNums = ({
       },
       {
          label: 'Подписчики',
-         num: profile.followingCount,
+         num: profile.followersCount,
       },
       {
          label: 'Посты',
-         num: profile.followingCount,
+         num: profile.postsCount,
       },
    ];
    return (
