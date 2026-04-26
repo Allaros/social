@@ -184,3 +184,7 @@ export const UpdatePostSchema = z.object({
    allowComments: z.boolean(),
    visibility: z.enum(['public', 'followers', 'private']),
 });
+
+export const CreateCommentSchema = z.object({
+   body: z.string().min(1, { error: 'Нельзя оставить пустой комментарий' }),
+});

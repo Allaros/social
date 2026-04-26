@@ -3,7 +3,7 @@ import { feedApi } from '../api/feed';
 
 export const useGetFeed = (limit: number = 10) => {
    return useInfiniteQuery({
-      queryKey: ['feed'],
+      queryKey: ['posts', 'feed'],
       queryFn: ({ pageParam }: { pageParam?: string }) =>
          feedApi.getPosts({ limit, cursor: pageParam }),
 

@@ -8,7 +8,7 @@ import CreatePostForm from '@/features/post/components/forms/CreatePost';
 const CreatePost = () => {
    const profile = useProfile();
    return (
-      <div className="bg-neutralWhite-100 border border-neutralWhite-400 rounded-sm py-7 px-7 flex items-start gap-4">
+      <div className="bg-neutralWhite-100 border border-neutralWhite-400 rounded-sm py-7 px-7 max-md:px-4 max-md:py-3 flex items-start gap-4">
          <div className="pt-3 max-md:hidden">
             <Image
                src={profile?.avatarUrl ?? Unknown}

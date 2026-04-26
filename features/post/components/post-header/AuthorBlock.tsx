@@ -1,11 +1,11 @@
 import Image from 'next/image';
-import { PostAuthor, PostResponse } from '../types/post.responce';
+import { PostResponse } from '../../types/post.responce';
 import UnknownImage from '@/public/icons/Incognito.svg';
-import DotMenu from './DotMenu';
 import { formatPostDate } from '@/shared/utils/dating';
 import Link from 'next/link';
 import ROUTES from '@/shared/constants/routes';
-import { Permissions } from '../types/post.interface';
+import DotMenu from './DotMenu';
+import { Permissions } from '@/features/post/types/post.interface';
 
 const AuthorBlock = ({
    post,
@@ -15,7 +15,7 @@ const AuthorBlock = ({
    post: PostResponse;
 }) => {
    return (
-      <div className="flex justify-between items-center gap-6 border-b border-neutralWhite-400 px-8 pb-6">
+      <div className="flex justify-between items-center gap-6 border-b border-neutralWhite-400 px-8 pb-6 max-md:px-4 max-md:pb-3">
          <Link
             href={ROUTES.main.profile(post.author.username)}
             className="flex items-center py-0.5 px-0.5 gap-4 flex-2 cursor-pointer hover:bg-neutralWhite-300 transition-colors rounded-sm"
@@ -40,7 +40,7 @@ const AuthorBlock = ({
          <div className="flex flex-col items-end">
             <DotMenu post={post} permissions={permissions} />
             <p className="textLabel text-neutralBlack-400">
-               {formatPostDate(post.createdAt)}
+               {formatPostDate(post.createdAt)} {post.isEdited && '(ред.)'}{' '}
             </p>
          </div>
       </div>

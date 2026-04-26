@@ -1,10 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Manrope } from 'next/font/google';
 import './globals.css';
-import QueryProvider from '@/shared/providers/QueryProvider';
 import { Toaster } from '@/shared/components/ui/sonner';
-import ModalsProvider from '@/features/modal/providers/ModalsProvider';
-import LoaderProvider from '@/features/loader/providers/LoaderProvider';
 import MainProvider from '@/shared/providers/MainProvider';
 import SmoothScroll from '@/shared/components/SmoothScroll';
 

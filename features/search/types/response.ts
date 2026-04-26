@@ -1,17 +1,19 @@
-export type SearchSections = 'profiles';
+export type SearchSections = 'profiles' | 'posts';
 
 export interface DropdownItem {
    id: number;
-   type: 'profile';
+   type: 'profile' | 'post';
    primary: string;
    secondary: string;
+   avatarUrl?: string;
 }
 
 export const sectionTitles: Record<SearchSections, string> = {
    profiles: 'Профили',
+   posts: 'Посты',
 };
 
-export const sectionOrder: SearchSections[] = ['profiles'];
+export const sectionOrder: SearchSections[] = ['profiles', 'posts'];
 
 export type DropdownSearchResponse = Record<SearchSections, DropdownItem[]>;
 

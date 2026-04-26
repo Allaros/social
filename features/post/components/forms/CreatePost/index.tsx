@@ -104,7 +104,7 @@ const CreatePostForm = () => {
                      </FormItem>
                   )}
                />
-               <div className="absolute top-0 right-0 z-10 flex items-center gap-2">
+               <div className="absolute top-0 right-0 z-10 flex items-center gap-2 max-md:top-0.5">
                   <button
                      type="button"
                      onClick={() => openModal(MODALS.POST_SETTINGS, { form })}
@@ -118,7 +118,7 @@ const CreatePostForm = () => {
                      />
                   </button>
                   <button
-                     className="bg-primary-800 hover:bg-primary-900 cursor-pointer rounded-[100px] text-neutralWhite-100 textBody-medium px-5 py-1"
+                     className="textBody-medium max-md:textLabel-medium bg-primary-800 hover:bg-primary-900 cursor-pointer rounded-[100px] text-neutralWhite-100 px-5 py-1 max-md:px-2 max-md:py-0.5"
                      type="submit"
                      disabled={isPending}
                   >

@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import DropdownMenu from './components/DropdownMenu';
+import SearchDropdownMenu from './components/SearchDropdownMenu';
 
 const GlobalSearch = () => {
    const [searchQuery, setSearchQuery] = useState('');
@@ -35,9 +35,9 @@ const GlobalSearch = () => {
                }}
             />
          </div>
-         <DropdownMenu
+         <SearchDropdownMenu
             query={debouncedQuery}
-            className={`absolute top-full left-0 w-full transition duration-500 ${isFocus && debouncedQuery.length > 2 ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-1 pointer-events-none'}`}
+            className={`absolute top-full z-20 left-0 w-full transition duration-500 ${isFocus && debouncedQuery.length > 2 ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-1 pointer-events-none'}`}
          />
       </div>
    );

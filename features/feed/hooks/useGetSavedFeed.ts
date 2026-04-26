@@ -3,7 +3,7 @@ import { feedApi } from '../api/feed';
 
 export const useGetSavedFeed = (limit?: number) => {
    return useInfiniteQuery({
-      queryKey: ['saved'],
+      queryKey: ['posts', 'saved'],
       queryFn: ({ pageParam }: { pageParam?: string }) =>
          feedApi.getSavedPosts({ limit, cursor: pageParam }),
 

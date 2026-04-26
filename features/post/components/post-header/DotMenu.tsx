@@ -2,12 +2,18 @@
 import { useState } from 'react';
 import DotsIco from '@/public/icons/More.svg';
 import Image from 'next/image';
-import { usePostActions } from '../hooks/usePostActions';
+import { usePostActions } from '../../hooks/usePostActions';
 import { useModal } from '@/features/modal/hooks/useModal';
 import { ConfirmPayload } from '@/features/modal/types/modalPayload';
 import { MODALS } from '@/features/modal/constants/modals';
-import { ConfirmTextPayload } from '../constants/confirmTextPayload';
-import { PostResponse } from '../types/post.responce';
+import { ConfirmTextPayload } from '../../constants/confirmTextPayload';
+import { PostResponse } from '../../types/post.responce';
+import {
+   DropdownMenu,
+   DropdownMenuContent,
+   DropdownMenuItem,
+   DropdownMenuTrigger,
+} from '@/shared/components/ui/dropdown-menu';
 
 type PostAction = {
    label: string;
@@ -28,8 +34,9 @@ const DotMenu = ({
 }) => {
    const { canDelete, canEdit, canReport } = permissions;
    const { openModal } = useModal();
-   const [visible, setVisible] = useState(false);
-   const { hardDelete, softDelete, savePost, unsavePost } = usePostActions();
+   const { hardDelete, softDelete, toggleSaved } = usePostActions(
+      post.author.username
+   );
 
    const confirmHardDeletePayload: ConfirmPayload = {
       onConfirm: () => hardDelete.mutate(post.id),
@@ -37,24 +44,24 @@ const DotMenu = ({
    };
 
    const confirmSoftDeletePayload: ConfirmPayload = {
-      onConfirm: () => hardDelete.mutate(post.id),
-      ...ConfirmTextPayload.hardDelete,
+      onConfirm: () => softDelete.mutate(post.id),
+      ...ConfirmTextPayload.softDelete,
    };
 
    const actions: PostAction[] = [
       {
-         label: 'Сохранить',
-         action: () => savePost.mutate(post.id),
-         visible: !post.isSaved,
-      },
-      {
-         label: 'Удалить из избранного',
-         action: () => unsavePost.mutate(post.id),
-         visible: post.isSaved,
+         label: post.isSaved ? 'Удалить из избранного' : 'Сохранить',
+         action: () =>
+            toggleSaved.mutate({ postId: post.id, isSaved: post.isSaved }),
+         visible: true,
       },
       {
          label: 'Редактировать',
-         action: () => openModal(MODALS.POST_EDIT, { post }),
+         action: () =>
+            openModal(MODALS.POST_EDIT, {
+               post,
+               username: post.author.username,
+            }),
          visible: canEdit,
       },
       // {
@@ -64,7 +71,7 @@ const DotMenu = ({
       // },
       {
          label: 'Удалить',
-         action: () => softDelete.mutate(post.id),
+         action: () => openModal(MODALS.CONFIRM, confirmSoftDeletePayload),
          visible: canDelete,
       },
       {
@@ -74,36 +81,30 @@ const DotMenu = ({
       },
    ];
    return (
-      <div className="relative">
-         <button
-            onClick={() => setVisible(!visible)}
-            className="cursor-pointer hover:bg-neutralWhite-400 transition-colors rounded-[2px]"
-         >
-            <Image
-               src={DotsIco}
-               alt={'post actions'}
-               width={24}
-               height={24}
-            ></Image>
-         </button>
-         <div
-            className={`absolute top-full right-[50%] card flex flex-col items-start z-20 text-nowrap transition ${visible ? 'opasity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-         >
-            {actions.map((button) => {
+      <DropdownMenu>
+         <DropdownMenuTrigger asChild>
+            <button className="cursor-pointer hover:bg-neutralWhite-400 transition-colors rounded-[4px] p-1">
+               <Image src={DotsIco} alt="post actions" width={24} height={24} />
+            </button>
+         </DropdownMenuTrigger>
+
+         <DropdownMenuContent align="end" className="w-48">
+            {actions.map((button, i) => {
                if (button.visible) {
                   return (
-                     <button
-                        key={button.label}
+                     <DropdownMenuItem
+                        key={i}
                         onClick={() => button.action(post.id)}
-                        className="hover:bg-neutralWhite-400 cursor-pointer px-4 py-2 w-full text-left"
                      >
                         {button.label}
-                     </button>
+                     </DropdownMenuItem>
                   );
+               } else {
+                  return null;
                }
             })}
-         </div>
-      </div>
+         </DropdownMenuContent>
+      </DropdownMenu>
    );
 };
 

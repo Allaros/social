@@ -2,8 +2,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postApi } from '../api/post';
 import { useLoader } from '@/features/loader/hooks/useLoader';
 import { toast } from 'sonner';
+import {
+   optimisticUpdatePosts,
+   rollbackPosts,
+} from '../helpers/post-optimistic-update';
 
-export const usePostActions = () => {
+export const usePostActions = (username: string) => {
    const { hideLoader, showLoader } = useLoader();
    const queryClient = useQueryClient();
 
@@ -17,7 +21,7 @@ export const usePostActions = () => {
          hideLoader();
       },
       onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: ['posts', 'my'] });
+         queryClient.invalidateQueries({ queryKey: ['posts'], exact: false });
       },
    });
 
@@ -31,22 +35,43 @@ export const usePostActions = () => {
          hideLoader();
       },
       onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: ['feed'] });
+         queryClient.invalidateQueries({ queryKey: ['posts'], exact: false });
       },
    });
 
-   const savePost = useMutation({
-      mutationFn: (postId: number) => postApi.savePost(postId),
-      onSuccess: () => {
-         toast.success('Пост успешно сохранен');
+   const toggleSaved = useMutation({
+      mutationFn: ({
+         postId,
+         isSaved,
+      }: {
+         postId: number;
+         isSaved: boolean;
+      }) => {
+         if (isSaved) {
+            return postApi.unsavePost(postId);
+         } else {
+            return postApi.savePost(postId);
+         }
       },
-   });
 
-   const unsavePost = useMutation({
-      mutationFn: (postId: number) => postApi.unsavePost(postId),
-      onSuccess: () => {
-         toast.success('Пост удален из избранного');
-         queryClient.invalidateQueries({ queryKey: ['saved'] });
+      onMutate: async ({ postId }) =>
+         optimisticUpdatePosts({
+            queryClient,
+            postId,
+            updater: (post) => ({
+               ...post,
+               isSaved: !post.isSaved,
+            }),
+         }),
+
+      onError: (error, _, context) => {
+         rollbackPosts(queryClient, context?.previousData);
+         toast.error(`Ошибка сохранения: ${error.message}`);
+      },
+      onSuccess: (_, { isSaved }) => {
+         toast(
+            `Пост успешно ${isSaved ? 'удалён из сохраненных.' : 'сохранён.'}`
+         );
       },
    });
 
@@ -57,7 +82,7 @@ export const usePostActions = () => {
    return {
       hardDelete,
       softDelete,
-      savePost,
-      unsavePost,
+
+      toggleSaved,
    };
 };

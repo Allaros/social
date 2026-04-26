@@ -7,7 +7,7 @@ export const useGetProfileFeed = (
    limit?: number
 ) => {
    return useInfiniteQuery({
-      queryKey: ['profile', username, 'posts'],
+      queryKey: ['posts', 'profile', username],
       queryFn: ({ pageParam }: { pageParam?: string }) =>
          feedApi.getProfilePosts({ targetProfileId, limit, cursor: pageParam }),
       getNextPageParam: (lastPage) => {

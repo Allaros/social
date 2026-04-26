@@ -1,5 +1,5 @@
 import SuggestedFriendsCard from '@/features/friends/components/cards/SuggestedFriendsCard';
-import CreatePost from '@/features/post/components/CreatePostComp';
+import CreatePost from '@/features/post/components/forms/CreatePostComp';
 import FeedWheel from '@/features/feed/components/FeedWheel';
 
 const Home = () => {

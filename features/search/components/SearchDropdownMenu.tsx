@@ -2,8 +2,15 @@ import { useRouter } from 'next/navigation';
 import { useDropdownSearch } from '../hooks/useDropdownSearch';
 import { DropdownItem, sectionOrder, sectionTitles } from '../types/response';
 import qs from 'query-string';
+import Image from 'next/image';
+import {
+   Avatar,
+   AvatarFallback,
+   AvatarImage,
+} from '@/shared/components/ui/avatar';
+import UnknownIco from '@/public/icons/Incognito.svg';
 
-const DropdownMenu = ({
+const SearchDropdownMenu = ({
    query,
    className,
 }: {
@@ -36,7 +43,10 @@ const DropdownMenu = ({
                            const newUrl = qs.stringifyUrl({
                               url: '/search',
                               query: {
-                                 q: item.primary,
+                                 q:
+                                    item.type === 'profile'
+                                       ? item.primary
+                                       : query,
                                  type: section,
                                  limit: 10,
                                  page: 1,
@@ -46,13 +56,31 @@ const DropdownMenu = ({
                               <div
                                  onClick={() => router.push(newUrl)}
                                  key={item.id}
-                                 className="px-8 py-2 cursor-pointer hover:bg-neutralWhite-400 transition-colors"
+                                 className="px-8 py-2 flex items-center gap-4 cursor-pointer hover:bg-neutralWhite-400 transition-colors"
                               >
-                                 <div className="textBody text-neutralBlack-900">
-                                    {item.primary}
+                                 <div>
+                                    <Avatar className="size-10">
+                                       <AvatarImage
+                                          src={item.avatarUrl}
+                                          alt="profile avatar"
+                                       />
+                                       <AvatarFallback>
+                                          <Image
+                                             src={UnknownIco}
+                                             height={40}
+                                             width={40}
+                                             alt="profile avatar"
+                                          />
+                                       </AvatarFallback>
+                                    </Avatar>
                                  </div>
-                                 <div className="textLabel text-neutralBlack-600">
-                                    {item.secondary}
+                                 <div>
+                                    <div className="textBody text-neutralBlack-900 line-clamp-1">
+                                       {item.primary}
+                                    </div>
+                                    <div className="textLabel text-neutralBlack-600">
+                                       {item.secondary}
+                                    </div>
                                  </div>
                               </div>
                            );
@@ -66,4 +94,4 @@ const DropdownMenu = ({
    );
 };
 
-export default DropdownMenu;
+export default SearchDropdownMenu;

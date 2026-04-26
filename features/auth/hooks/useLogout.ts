@@ -17,7 +17,7 @@ export const useLogout = () => {
 
       onSettled: () => {
          hideLoader();
-         queryClient.removeQueries({ queryKey: ['auth'] });
+         queryClient.clear();
 
          router.replace(ROUTES.auth.signIn);
       },

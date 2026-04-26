@@ -1,4 +1,5 @@
 import { api } from '@/shared/api/axios';
+import { LikeTargetType } from '@/shared/constants/LikeTargetType';
 
 export const postApi = {
    //================================== Post Module ==============================================
@@ -33,6 +34,11 @@ export const postApi = {
       return data;
    },
 
+   addView: async (postId: number) => {
+      const { data } = await api.post(`posts/${postId}/view`);
+      return data;
+   },
+
    //================================== Saving Module ==============================================
 
    savePost: async (postId: number) => {
@@ -47,12 +53,14 @@ export const postApi = {
    //================================== Like Module ==============================================
 
    likePost: async (postId: number) => {
-      const { data } = await api.post(`like/${postId}`);
+      const { data } = await api.post(`likes/${LikeTargetType.POST}/${postId}`);
       return data;
    },
 
    unlikePost: async (postId: number) => {
-      const { data } = await api.delete(`like/${postId}`);
+      const { data } = await api.delete(
+         `likes/${LikeTargetType.POST}/${postId}`
+      );
       return data;
    },
 };

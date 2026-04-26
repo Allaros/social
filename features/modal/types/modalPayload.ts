@@ -25,6 +25,7 @@ export type PostSettingsPayload = {
 
 export type PostEditPayload = {
    post: PostResponse;
+   username: string;
 };
 
 export type ModalPayloadMap = {

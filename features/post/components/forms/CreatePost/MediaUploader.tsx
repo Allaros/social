@@ -144,7 +144,7 @@ const MediaUploader = ({
             }}
             onDragLeave={() => setDragging(false)}
             onDrop={handleDrop}
-            className={`flex items-center ${className} hover:bg-neutralWhite-400 gap-2 rounded-lg px-2 py-1 text-center cursor-pointer transition ${
+            className={`textBody flex items-center ${className} hover:bg-neutralWhite-400 gap-2 rounded-lg px-2 py-1 text-center cursor-pointer transition ${
                dragging
                   ? 'bg-neutralWhite-200 border-neutralWhite-500'
                   : 'bg-neutralWhite-100 border-neutralWhite-400'
@@ -161,13 +161,13 @@ const MediaUploader = ({
          </div>
 
          {value.length > 0 && (
-            <div className="text-sm mt-2 text-neutralBlack-500">
+            <div className="textBody mt-2 text-neutralBlack-500">
                {value.length}/{MAX_FILES} файлов
             </div>
          )}
 
          {value.length > 0 && (
-            <div className="grid grid-cols-5 gap-2 mt-3">
+            <div className="grid grid-cols-5 gap-2 mt-3 max-md:grid-cols-3">
                {value.map((item, i) => {
                   const { file, preview } = item;
 

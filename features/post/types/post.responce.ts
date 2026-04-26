@@ -2,6 +2,7 @@ export interface PostResponse {
    id: number;
    content: string;
    createdAt: Date;
+   isEdited: boolean;
    allowComments: boolean;
    visibility: 'public' | 'followers' | 'private';
 

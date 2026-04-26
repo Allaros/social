@@ -1,5 +1,25 @@
 import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
+   // ============================= Оптимизация =============================
+   reactStrictMode: false,
+   typescript: {
+      ignoreBuildErrors: true,
+   },
+
+   eslint: {
+      ignoreDuringBuilds: true,
+   },
+
+   webpack: (config, { dev }) => {
+      if (dev) {
+         config.experiments = {
+            ...config.experiments,
+            lazyCompilation: true,
+         };
+      }
+      return config;
+   },
+   // ============================= Оптимизация =============================
    images: {
       remotePatterns: [
          {

@@ -12,7 +12,7 @@ const RootHeader = () => {
    const isMobile = useIsMobile();
 
    return (
-      <div className="fixed w-full top-0 left-0 bg-neutralWhite-100 z-10">
+      <div className="fixed w-full top-0 left-0 bg-neutralWhite-100 z-20">
          <nav className="grid max-w-7xl mx-auto grid-cols-[3fr_6fr_3fr]  max-lg:grid-cols-[3fr_5fr_3fr] gap-1.5 max-md:grid-cols-2 items-center py-4.5 px-6 box-border">
             <Link className="flex items-center gap-3" href={ROUTES.home}>
                <Image

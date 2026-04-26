@@ -1,6 +1,6 @@
 import { useModal } from '@/features/modal/hooks/useModal';
-import { MediaGridMapping, RowConfig } from '../constants/MediaGridMapping';
-import { PostMedia } from '../types/post.responce';
+import { MediaGridMapping, RowConfig } from '../../constants/MediaGridMapping';
+import { PostMedia } from '../../types/post.responce';
 import { MODALS } from '@/features/modal/constants/modals';
 
 const colsClassMap: Record<number, string> = {

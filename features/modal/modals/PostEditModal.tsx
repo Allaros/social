@@ -23,6 +23,7 @@ import {
    SelectTrigger,
    SelectValue,
 } from '@/shared/components/ui/select';
+import { useEditPost } from '@/features/post/hooks/useEditPost';
 
 type Props = {
    close: () => void;
@@ -32,7 +33,8 @@ type Props = {
 type EditPostFormData = z.infer<typeof UpdatePostSchema>;
 
 const PostEditModal = ({ close, payload }: Props) => {
-   const { post } = payload;
+   const { post, username } = payload;
+   const { mutate: editPost, isPending } = useEditPost(username);
    const form = useForm<EditPostFormData>({
       resolver: zodResolver(UpdatePostSchema),
       defaultValues: {
@@ -79,6 +81,8 @@ const PostEditModal = ({ close, payload }: Props) => {
       fresh.forEach((m) => {
          formData.append('media', m.file);
       });
+
+      editPost({ postId: post.id, formData: formData });
    };
 
    return (
