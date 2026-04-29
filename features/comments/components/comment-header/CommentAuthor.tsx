@@ -1,15 +1,9 @@
-import {
-   Avatar,
-   AvatarFallback,
-   AvatarImage,
-} from '@/shared/components/ui/avatar';
 import { formatPostDate } from '@/shared/utils/dating';
-import Image from 'next/image';
 import React from 'react';
 import { CommentResponse } from '../../types/comments.interface';
-import UnknownIco from '@/public/icons/Incognito.svg';
 import Link from 'next/link';
 import ROUTES from '@/shared/constants/routes';
+import AvatarComponent from '@/features/user/components/AvatarComponent';
 
 const CommentAuthor = ({
    comment,
@@ -24,23 +18,12 @@ const CommentAuthor = ({
             className="flex gap-4 p-1 items-center cursor-pointer hover:bg-neutralWhite-400 rounded-sm flex-2"
             href={ROUTES.main.profile(comment.author.username)}
          >
-            <Avatar>
-               <AvatarImage
-                  src={comment.author.avatarUrl}
-                  width={48}
-                  height={48}
-                  alt="avatar"
-                  className="max-w-12 max-h-12 rounded-full"
+            <div className="size-12">
+               <AvatarComponent
+                  avatarUrl={comment.author.avatarUrl}
+                  name={comment.author.name}
                />
-               <AvatarFallback>
-                  <Image
-                     src={UnknownIco}
-                     width={48}
-                     height={48}
-                     alt="avatar"
-                  ></Image>
-               </AvatarFallback>
-            </Avatar>
+            </div>
             <div>
                <p className="h6 text-neutralBlack-900 flex items-center gap-2 line-clamp-1">
                   {comment.author.name}{' '}

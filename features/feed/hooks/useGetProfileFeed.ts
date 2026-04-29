@@ -1,10 +1,15 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { feedApi } from '../api/feed';
 
+type Options = {
+   enabled?: boolean;
+};
+
 export const useGetProfileFeed = (
    username: string,
    targetProfileId: number,
-   limit?: number
+   limit?: number,
+   options?: Options
 ) => {
    return useInfiniteQuery({
       queryKey: ['posts', 'profile', username],
@@ -14,5 +19,6 @@ export const useGetProfileFeed = (
          return lastPage.nextCursor ?? undefined;
       },
       initialPageParam: undefined,
+      enabled: options?.enabled ?? true,
    });
 };

@@ -3,40 +3,50 @@
 import React, { createContext, useContext, useMemo, useState } from 'react';
 import CommentsDrawer from '../components/CommentsDrawer';
 import {
-   ReplyPayload,
-   CommentsUIState,
    CommentsPayload,
+   CommentsUIState,
+   ReplyPayload,
+   SearchUIState,
 } from '../types/drawer.interface';
+import SearchDrawer from '../components/SearchDrawer';
 
 type ContextType = {
+   // comments
    openComments: (payload: CommentsPayload) => void;
    openReply: (payload: ReplyPayload) => void;
-   back: () => void;
-   close: () => void;
-   state: CommentsUIState;
+   backComments: () => void;
+   closeComments: () => void;
+
+   // search
+   openSearch: () => void;
+   closeSearch: () => void;
 };
 
-const CommentsUIContext = createContext<ContextType | null>(null);
+const UIContext = createContext<ContextType | null>(null);
 
-export const CommentsUIProvider = ({
-   children,
-}: {
-   children: React.ReactNode;
-}) => {
-   const [state, setState] = useState<CommentsUIState>({
+export const UIProvider = ({ children }: { children: React.ReactNode }) => {
+   // ===== COMMENTS =====
+   const [comments, setComments] = useState<CommentsUIState>({
       isOpen: false,
       screen: null,
    });
 
+   // ===== SEARCH =====
+   const [search, setSearch] = useState<SearchUIState>({
+      isOpen: false,
+   });
+
+   // ================= COMMENTS =================
+
    const openComments = (payload: CommentsPayload) => {
-      setState({
+      setComments({
          isOpen: true,
          screen: { type: 'comments', payload },
       });
    };
 
    const openReply = (payload: ReplyPayload) => {
-      setState((prev) => {
+      setComments((prev) => {
          if (!prev.screen || prev.screen.type !== 'comments') return prev;
 
          return {
@@ -46,8 +56,8 @@ export const CommentsUIProvider = ({
       });
    };
 
-   const back = () => {
-      setState((prev) => {
+   const backComments = () => {
+      setComments((prev) => {
          if (!prev.screen) return prev;
 
          if (prev.screen.type === 'reply') {
@@ -67,40 +77,57 @@ export const CommentsUIProvider = ({
       });
    };
 
-   const close = () => {
-      setState({
+   const closeComments = () => {
+      setComments({
          isOpen: false,
          screen: null,
       });
    };
 
+   // ================= SEARCH =================
+
+   const openSearch = () => {
+      setSearch({ isOpen: true });
+   };
+
+   const closeSearch = () => {
+      setSearch({ isOpen: false });
+   };
+
+   // ================= VALUE =================
+
    const value = useMemo(
       () => ({
          openComments,
          openReply,
-         back,
-         close,
-         state,
+         backComments,
+         closeComments,
+         openSearch,
+         closeSearch,
       }),
-      [state]
+      []
    );
 
    return (
-      <CommentsUIContext.Provider value={value}>
+      <UIContext.Provider value={value}>
          {children}
 
          <CommentsDrawer
-            open={state.isOpen}
-            screen={state.screen}
-            onClose={close}
-            onBack={back}
+            open={comments.isOpen}
+            screen={comments.screen}
+            onClose={closeComments}
+            onBack={backComments}
          />
-      </CommentsUIContext.Provider>
+
+         <SearchDrawer open={search.isOpen} onClose={closeSearch} />
+      </UIContext.Provider>
    );
 };
 
-export const useCommentsUI = () => {
-   const ctx = useContext(CommentsUIContext);
-   if (!ctx) throw new Error('useCommentsUI must be used inside provider');
+// ================= HOOK =================
+
+export const useDrawer = () => {
+   const ctx = useContext(UIContext);
+   if (!ctx) throw new Error('useUI must be used inside UIProvider');
    return ctx;
 };

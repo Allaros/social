@@ -1,13 +1,13 @@
 'use client';
 
-import { useCommentsUI } from '@/features/drawer/provider/drawerProvider';
+import { useDrawer } from '@/features/drawer/provider/drawerProvider';
 import { PostResponse } from '../../types/post.responce';
 import ActionHeader from './ActionHeader';
 import CommentIco from '@/public/icons/Comment.svg';
 import Image from 'next/image';
 
 const ActionBlock = ({ post }: { post: PostResponse }) => {
-   const { openComments } = useCommentsUI();
+   const { openComments } = useDrawer();
    return (
       <div className="mt-8 px-8 max-md:px-4 max-md:mt-4">
          <ActionHeader post={post} />

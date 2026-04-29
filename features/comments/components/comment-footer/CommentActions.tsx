@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 import { CommentResponse } from '../../types/comments.interface';
 import RedactIco from '@/public/icons/Write.svg';
-import { useCommentsUI } from '@/features/drawer/provider/drawerProvider';
+import { useDrawer } from '@/features/drawer/provider/drawerProvider';
 import { useCommentContext } from '../../context/commentContext';
 import { useCommentLike } from '../../hooks/useCommentLike';
 
@@ -20,7 +20,7 @@ const CommentActions = ({
    isDeleting: boolean;
    authorId?: number;
 }) => {
-   const { openReply } = useCommentsUI();
+   const { openReply } = useDrawer();
 
    const { postAuthorUsername, postId, currentProfile } = useCommentContext();
 

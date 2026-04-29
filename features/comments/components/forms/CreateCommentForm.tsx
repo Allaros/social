@@ -2,11 +2,6 @@
 
 import { useProfile } from '@/features/profile/hooks/useProfile';
 import {
-   Avatar,
-   AvatarFallback,
-   AvatarImage,
-} from '@/shared/components/ui/avatar';
-import {
    Form,
    FormControl,
    FormField,
@@ -14,13 +9,12 @@ import {
 } from '@/shared/components/ui/form';
 import { CreateCommentSchema } from '@/shared/utils/validations';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
-import UnknownIco from '@/public/icons/Incognito.svg';
 import { SendHorizontal } from 'lucide-react';
 import useCreateComment from '../../hooks/useCreateComment';
 import { ICreateComment } from '../../types/comments.request';
+import AvatarComponent from '@/features/user/components/AvatarComponent';
 
 type FormFields = z.infer<typeof CreateCommentSchema>;
 
@@ -84,17 +78,12 @@ const CreateCommentForm = ({
 
    return (
       <div className="flex items-center gap-6 max-md:gap-2 py-4 max-md:py-2">
-         <Avatar className="self-start">
-            <AvatarImage
-               src={profile?.avatarUrl}
-               width={48}
-               height={48}
-               alt="avatar"
-            />
-            <AvatarFallback>
-               <Image src={UnknownIco} width={48} height={48} alt="avatar" />
-            </AvatarFallback>
-         </Avatar>
+         <div className="size-12">
+            <AvatarComponent
+               avatarUrl={profile?.avatarUrl}
+               name={profile?.name}
+            ></AvatarComponent>
+         </div>
          <Form {...form}>
             <form
                className="flex-1 flex items-end gap-2"

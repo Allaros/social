@@ -1,37 +1,47 @@
 'use client';
-
-import Image from 'next/image';
-import UnknownImg from '@/public/icons/Incognito.svg';
 import { Skeleton } from '@/shared/components/ui/skeleton';
+import AvatarComponent from '@/features/user/components/AvatarComponent';
+import { cn } from '@/shared/lib/utils';
 const ProfileInfo = ({
    profile,
    isError,
+   isMobile,
 }: {
    profile?: ProfileResponce;
    isError: boolean;
+   isMobile: boolean;
 }) => {
    if (isError) return <div>Ошибка загрузки профиля</div>;
 
    return (
-      <div className="flex items-center gap-6">
-         <div className="h-24 w-24">
+      <div className="flex md:flex-row flex-col items-center gap-6">
+         <div className="size-20 md:size-24">
             {!profile ? (
                <Skeleton className="h-full w-full rounded-full" />
             ) : (
-               <Image
-                  src={profile.avatarUrl ?? UnknownImg}
-                  width={96}
-                  height={96}
-                  alt={'Profile Image'}
-                  className="rounded-full"
-               ></Image>
+               <AvatarComponent
+                  avatarUrl={profile.avatarUrl}
+                  name={profile.name}
+               />
             )}
          </div>
 
          <div>
-            <div className="h4 flex items-center gap-2">
-               {!profile ? <Skeleton className="h-6 w-40" /> : profile.name}{' '}
-               <span className="textBody text-neutralBlack-500">/</span>{' '}
+            <div
+               className={cn(
+                  'items-center  flex',
+                  'h5 flex-col',
+                  'md:h4 md:flex-row md:gap-2'
+               )}
+            >
+               {!profile ? (
+                  <Skeleton className="md:h-6 h-4 md:w-40 w-30" />
+               ) : (
+                  profile.name
+               )}{' '}
+               {!isMobile && (
+                  <span className="textBody text-neutralBlack-500">/</span>
+               )}{' '}
                <span className="textLabel text-neutralBlack-500">
                   {!profile ? (
                      <Skeleton className="h-4 w-40" />

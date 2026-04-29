@@ -3,6 +3,7 @@ import { TabsType } from '../../types/TabsType';
 import PostsCard from '../cards/PostsCard';
 import FavouritesCard from '../cards/FavouritesCard';
 import SettingsCard from '../cards/SettingsCard';
+import { useProfile } from '../../hooks/useProfile';
 
 const TabsMapper = ({
    type,
@@ -13,9 +14,15 @@ const TabsMapper = ({
    username: string;
    profileId?: number;
 }) => {
+   const profile = useProfile();
+
+   const isOwner = profile?.username === username;
+
    switch (type) {
       case 'posts': {
-         return <PostsCard id={profileId} username={username} />;
+         return (
+            <PostsCard id={profileId} username={username} isOwner={isOwner} />
+         );
       }
       case 'saved-posts': {
          return <FavouritesCard />;
@@ -24,7 +31,9 @@ const TabsMapper = ({
          return <SettingsCard username={username} />;
       }
       default:
-         return <PostsCard id={profileId} username={username} />;
+         return (
+            <PostsCard id={profileId} username={username} isOwner={isOwner} />
+         );
    }
 };
 

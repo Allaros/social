@@ -14,6 +14,7 @@ import {
 import ImageUploader from '../../../post/components/forms/CreatePost/MediaUploader';
 import UploadIco from '@/public/icons/Upload.svg';
 import { useUpdateProfile } from '../../hooks/useUpdateProfile';
+import { cn } from '@/shared/lib/utils';
 
 type FormValues = z.infer<typeof UpdateProfileSchema>;
 type TextField = Exclude<keyof FormValues, 'image'>;
@@ -67,21 +68,25 @@ const UpdateProfile = ({ username }: { username: string }) => {
    return (
       <Form {...form}>
          <form
-            className="flex flex-col gap-6 items-start "
+            className="flex flex-col md:gap-6 gap-4 items-start "
             onSubmit={form.handleSubmit(onSubmit)}
          >
             <FormField
                control={form.control}
                name="image"
                render={({ field }) => (
-                  <FormItem className="min-w-[50%]">
+                  <FormItem className="min-w-[50%] max-md:w-full">
                      <FormControl>
                         <ImageUploader
                            text="Выберите изображение профиля"
                            icon={UploadIco}
                            maxFiles={1}
                            maxImageMb={10}
-                           className="border-2 border-dashed border-neutralWhite-400 py-3 px-5 text-neutralBlack-600 textBody"
+                           className={cn(
+                              'border-2 border-dashed border-neutralWhite-400 text-neutralBlack-600 flex justify-center',
+                              'textLabel py-2 px-3',
+                              'md:textBody md:py-3 md:px-5'
+                           )}
                            value={field.value ? [field.value] : []}
                            onChange={(files) => field.onChange(files[0])}
                            allowedTypes={allowedTypes}
@@ -98,13 +103,19 @@ const UpdateProfile = ({ username }: { username: string }) => {
                   control={form.control}
                   name={name}
                   render={({ field }) => (
-                     <FormItem className="min-w-[50%]">
-                        <FormControl className="w-full py-2.5 px-6 border border-neutralWhite-400 rounded-sm textBody text-neutralBlack-900 outline-none transition-colors focus:border-neutralBlack-600">
+                     <FormItem className="min-w-[50%] max-md:w-full">
+                        <FormControl
+                           className={cn(
+                              'w-full px-6 border border-neutralWhite-400 rounded-sm   text-neutralBlack-900 outline-none transition-colors focus:border-neutralBlack-600',
+                              'textLabel py-2',
+                              'md:textBody md:py-2.5 '
+                           )}
+                        >
                            {name === 'bio' ? (
                               <textarea
                                  {...field}
                                  placeholder={textPlaceholders.bio}
-                                 className="resize-none"
+                                 className="resize-none max-md:min-h-20"
                               ></textarea>
                            ) : (
                               <input
@@ -121,7 +132,7 @@ const UpdateProfile = ({ username }: { username: string }) => {
             ))}
             <button
                type="submit"
-               className="textBody-medium text-neutralWhite-100 bg-neutralBlack-900 hover:bg-neutralBlack-850 transition-colors cursor-pointer rounded-sm py-2 px-6"
+               className="md:textBody-medium textLabel-medium text-neutralWhite-100 bg-neutralBlack-900 hover:bg-neutralBlack-850 transition-colors cursor-pointer rounded-sm py-2 px-6"
             >
                Сохранить
             </button>

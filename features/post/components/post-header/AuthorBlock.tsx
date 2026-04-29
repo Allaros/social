@@ -1,11 +1,10 @@
-import Image from 'next/image';
 import { PostResponse } from '../../types/post.responce';
-import UnknownImage from '@/public/icons/Incognito.svg';
 import { formatPostDate } from '@/shared/utils/dating';
 import Link from 'next/link';
 import ROUTES from '@/shared/constants/routes';
 import DotMenu from './DotMenu';
 import { Permissions } from '@/features/post/types/post.interface';
+import AvatarComponent from '@/features/user/components/AvatarComponent';
 
 const AuthorBlock = ({
    post,
@@ -20,13 +19,13 @@ const AuthorBlock = ({
             href={ROUTES.main.profile(post.author.username)}
             className="flex items-center py-0.5 px-0.5 gap-4 flex-2 cursor-pointer hover:bg-neutralWhite-300 transition-colors rounded-sm"
          >
-            <Image
-               src={post.author.avatarUrl ?? UnknownImage}
-               alt="Author picture"
-               width={56}
-               height={56}
-               className="rounded-full"
-            />
+            <div className="relative size-14">
+               <AvatarComponent
+                  avatarUrl={post.author.avatarUrl}
+                  name={post.author.name}
+                  className="absolute inset-0"
+               />
+            </div>
             <div>
                <div className="h6 text-neutralBlack-900 ">
                   {post.author.name}

@@ -4,7 +4,6 @@ import ProfileImg from '@/public/icons/User.svg';
 import MessagesImg from '@/public/icons/Send.svg';
 import NotificationsImg from '@/public/icons/Notification.svg';
 import SearchImg from '@/public/icons/Search.svg';
-import UnknownImg from '@/public/icons/Incognito.svg';
 import { StaticImageData } from 'next/image';
 
 export interface UserLinksInterface {
@@ -14,26 +13,28 @@ export interface UserLinksInterface {
    label?: string;
 }
 
-export const MobileUserLinksData: UserLinksInterface[] = [
+export interface MobileUserLinksInterface {
+   image: StaticImageData;
+   alt: string;
+   href: string;
+   label?: string;
+}
+
+export const MobileUserLinksData: MobileUserLinksInterface[] = [
    {
-      imageSrc: HomeImg,
+      image: HomeImg,
       alt: 'Home link',
-      isLink: () => ROUTES.home,
+      href: ROUTES.home,
    },
    {
-      imageSrc: SearchImg,
+      image: SearchImg,
       alt: 'Search',
-      isLink: () => ROUTES.home,
+      href: ROUTES.home,
    },
    {
-      imageSrc: NotificationsImg,
+      image: NotificationsImg,
       alt: 'Notifications link',
-      isLink: () => ROUTES.home,
-   },
-   {
-      imageSrc: UnknownImg,
-      alt: 'Profile link',
-      isLink: (slug) => ROUTES.main.profile(slug!),
+      href: ROUTES.home,
    },
 ];
 

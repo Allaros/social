@@ -25,7 +25,7 @@ const ProfileView = ({
                profileId={profile?.id}
             />
          ) : (
-            <PostsCard username={username} id={profile?.id} />
+            <PostsCard isOwner={false} username={username} id={profile?.id} />
          )}
       </>
    );

@@ -1,9 +1,3 @@
-'use client';
-
-import { useGetProfile } from '@/features/profile/hooks/useGetProfile';
-import { useParams } from 'next/navigation';
-import Loader from '@/features/loader/components/Loader';
-
 const ProfileNums = ({
    profile,
    isError,
@@ -32,7 +26,7 @@ const ProfileNums = ({
       <div className="flex items-center gap-6">
          {nums.map((item, i) => (
             <div key={i} className="text-center">
-               <p className="h3 text-neutralBlack-900">{item.num}</p>
+               <p className="md:h3 h4 text-neutralBlack-900">{item.num}</p>
                <p className="textLabel text-neutralBlack-500">{item.label}</p>
             </div>
          ))}

@@ -22,7 +22,7 @@ const UserCard = () => {
          <div className="flex flex-col gap-4">
             <UserInfo />
 
-            <UserLinks linksData={UserLinksData} isMobile={false} />
+            <UserLinks linksData={UserLinksData} />
          </div>
       </div>
    );

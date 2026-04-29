@@ -1,13 +1,16 @@
 import { useModal } from '@/features/modal/hooks/useModal';
-import { SettingsTab } from './cards/SettingsCard';
 import { MODALS } from '@/features/modal/constants/modals';
 import { ConfirmPayload } from '@/features/modal/types/modalPayload';
 import { useLogout } from '@/features/auth/hooks/useLogout';
+import { SettingsTab } from '../cards/SettingsCard';
+import { cn } from '@/shared/lib/utils';
 
 const SettingsTabs = ({
    changeTab,
+   currentTab,
 }: {
    changeTab: (value: SettingsTab) => void;
+   currentTab: SettingsTab;
 }) => {
    const { mutate: logout } = useLogout();
    const { openModal } = useModal();
@@ -20,14 +23,29 @@ const SettingsTabs = ({
       confirmText: 'Выйти',
       cancelText: 'Остаться',
    };
-   const className =
-      'px-10 py-2 hover:bg-neutralWhite-400 w-full text-left textBody text-neutralBlack-800 cursor-pointer';
+   const className = cn(
+      'py-2 hover:bg-neutralWhite-400 textBody text-neutralBlack-800 cursor-pointer',
+      'px-0 flex-1 text-center',
+      'md:px-10 md:w-full md:text-left'
+   );
    return (
-      <div className="flex flex-col items-start ">
-         <button className={className} onClick={() => changeTab('general')}>
+      <div
+         className={cn(
+            'flex transition-colors duration-300',
+            'flex-row items-center',
+            'md:flex-col md:items-start'
+         )}
+      >
+         <button
+            className={`${className} ${currentTab === 'general' && 'bg-neutralWhite-400'}`}
+            onClick={() => changeTab('general')}
+         >
             Основные
          </button>
-         <button className={className} onClick={() => changeTab('account')}>
+         <button
+            className={`${className} ${currentTab === 'account' && 'bg-neutralWhite-400'}`}
+            onClick={() => changeTab('account')}
+         >
             Аккаунт
          </button>
          <button

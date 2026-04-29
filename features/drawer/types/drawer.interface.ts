@@ -1,5 +1,7 @@
 import { CommentItemType } from '@/features/comments/types/comments.interface';
 
+// ===== COMMENTS =====
+
 export type ReplyPayload = {
    comment: CommentItemType;
    postId: number;
@@ -18,4 +20,10 @@ export type CommentsScreen =
 export type CommentsUIState = {
    isOpen: boolean;
    screen: CommentsScreen | null;
+};
+
+// ===== SEARCH =====
+
+export type SearchUIState = {
+   isOpen: boolean;
 };
