@@ -7,13 +7,15 @@ interface UserResponse {
 interface ProfileResponce {
    id: number;
    name: string;
-   username?: string;
+   username: string;
    followingCount: number;
    postsCount: number;
    followersCount: number;
    avatarUrl?: string;
    bio?: string;
    isOwner?: boolean;
+   isFollowed?: boolean;
+   isFollower?: boolean;
 }
 
 interface MeResponce {

@@ -12,6 +12,7 @@ const ROUTES = {
    home: '/',
    main: {
       profile: (username: string) => `/profile/${username}`,
+      notifications: '/notifications',
    },
 };
 

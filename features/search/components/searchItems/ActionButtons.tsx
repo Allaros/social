@@ -4,13 +4,26 @@ import ChevronIco from '@/public/icons/Chevron Left.svg';
 import { useIsMobile } from '@/shared/hooks/useIsMobile';
 import Link from 'next/link';
 
-const ActionButtons = ({ link, func }: { link: string; func: () => void }) => {
+const ActionButtons = ({
+   link,
+   func,
+   isFollowed,
+}: {
+   link: string;
+   func: () => void;
+   isFollowed?: boolean;
+}) => {
    const isMobile = useIsMobile();
    return (
       <div className="textBody-medium flex flex-col max-md:flex-row items-stretch gap-2 max-md:gap-4">
-         <button className="bg-primary-900 cursor-pointer transition-colors text-neutralWhite-100 hover:bg-primary-800 rounded-sm px-3 max-md:px-1 py-1 flex items-center justify-center gap-1 z-10">
-            <span className="max-md:hidden">Добавить в друзья</span>{' '}
-            <span className="addFriend"></span>
+         <button
+            onClick={func}
+            className="bg-primary-900 cursor-pointer transition-colors text-neutralWhite-100 hover:bg-primary-800 rounded-sm px-3 max-md:px-1 py-1 flex items-center justify-center gap-1 z-10"
+         >
+            <span className="max-md:hidden">
+               {(isFollowed ?? false) ? 'Отписаться' : 'Подписаться'}
+            </span>{' '}
+            {!isFollowed && <span className="addFriend"></span>}
          </button>
          {!isMobile && (
             <Link

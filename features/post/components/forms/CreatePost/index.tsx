@@ -80,7 +80,6 @@ const CreatePostForm = () => {
                            placeholder="Что сегодня на уме?"
                         />
                      </FormControl>
-                     <FormMessage />
                   </FormItem>
                )}
             />

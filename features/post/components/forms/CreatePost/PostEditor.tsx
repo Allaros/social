@@ -3,7 +3,7 @@ import { EditorContent, useEditor } from '@tiptap/react';
 import type { Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { List, Italic } from 'lucide-react';
 interface Props {
    value: string;
@@ -48,6 +48,14 @@ const PostEditor = ({ value, onChange, placeholder }: Props) => {
          setShowToolbar(editor.getText().length > 0);
       },
    });
+
+   useEffect(() => {
+      if (!editor) return;
+
+      if (editor.getHTML() !== value) {
+         editor.commands.setContent(value || '');
+      }
+   }, [value, editor]);
 
    if (!editor) return null;
 

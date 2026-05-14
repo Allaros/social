@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import { EditableMedia } from '../types/modal.interface';
 import AddIco from '@/public/icons/Add.svg';
+import Image from 'next/image';
 
 type Props = {
    value: EditableMedia[];
@@ -75,7 +76,7 @@ const EditMediaField = ({ onChange, value }: Props) => {
                onClick={() => inputRef.current?.click()}
                className="h-32 cursor-pointer group border rounded flex items-center justify-center transition-colors hover:bg-neutralWhite-400"
             >
-               <AddIco />
+               <Image src={AddIco} alt={'add media'} width={20} height={20} />
             </button>
          </div>
       </div>

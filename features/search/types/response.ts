@@ -1,3 +1,5 @@
+import { ProfileListItem } from '@/features/profile/types/profile.interface';
+
 export type SearchSections = 'profiles' | 'posts';
 
 export interface DropdownItem {
@@ -17,16 +19,8 @@ export const sectionOrder: SearchSections[] = ['profiles', 'posts'];
 
 export type DropdownSearchResponse = Record<SearchSections, DropdownItem[]>;
 
-export interface ProfileItemResponse {
-   id: number;
-   name: string;
-   username: string;
-   avatarUrl?: string;
-   bio?: string;
-}
-
 export interface GlobalSearchMap {
-   profiles: ProfileItemResponse[];
+   profiles: ProfileListItem[];
 }
 
 export type GlobalSearchResponse = GlobalSearchMap;

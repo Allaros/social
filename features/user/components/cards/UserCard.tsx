@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Cover from '@/public/Cover.png';
 import UserInfo from '@/features/user/components/UserInfo';
 import UserLinks from '@/features/user/components/navigation/UserLinks';
-import { UserLinksData } from '@/features/user/constants/UserLinksData';
 import { useIsMobile } from '@/shared/hooks/useIsMobile';
 
 const UserCard = () => {
@@ -22,7 +21,7 @@ const UserCard = () => {
          <div className="flex flex-col gap-4">
             <UserInfo />
 
-            <UserLinks linksData={UserLinksData} />
+            <UserLinks />
          </div>
       </div>
    );

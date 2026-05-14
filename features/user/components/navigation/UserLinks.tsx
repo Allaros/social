@@ -1,65 +1,87 @@
 'use client';
 import { useMe } from '@/features/auth/hooks/useMe';
-import CustomButton from '@/shared/components/CustomButton';
 import { UserLinksInterface } from '@/features/user/constants/UserLinksData';
+import NotificationsIco from '@/public/icons/Notification.svg';
+import MessagesIco from '@/public/icons/Send.svg';
+import HomeIco from '@/public/icons/Home.svg';
+import ProfileIco from '@/public/icons/User.svg';
+import Image from 'next/image';
+import Link from 'next/link';
+import ROUTES from '@/shared/constants/routes';
+import { cn } from '@/shared/lib/utils';
+import { useNotificationsState } from '@/features/notifications/hooks/useNotificationsCount';
 
-const UserLinks = ({
-   linksData,
-   isMobile = false,
-}: {
-   linksData: UserLinksInterface[];
-   isMobile: boolean;
-}) => {
+const UserLinks = () => {
    const { data: user } = useMe();
-
-   const getHref = (link: UserLinksInterface) => {
-      if (link.alt === 'Profile link') {
-         return link.isLink(user?.profile?.username);
-      }
-
-      return link.isLink();
-   };
-
-   if (isMobile) {
-      return (
-         <ul className="py-4.5 px-8.5 flex items-center gap-16.5 ">
-            {linksData.map((link) => {
-               const href = getHref(link);
-               return (
-                  <li key={link.alt}>
-                     <CustomButton
-                        className="block p-2 hover:bg-neutralWhite-400"
-                        h={20}
-                        w={20}
-                        {...link}
-                        isLink={href}
-                     ></CustomButton>
-                  </li>
-               );
-            })}
-         </ul>
-      );
-   }
+   const { data: notificationsState } = useNotificationsState();
+   const username = user?.profile?.username;
    return (
       <ul className="pb-8">
-         {linksData.map((link, index) => {
-            const href = getHref(link);
-
-            return (
-               <li key={link.alt} className="relative">
-                  <CustomButton
-                     className="flex max-lg:px-4 px-8 gap-2.5 items-center py-3.5 textBody-medium text-neutralBlack-600 hover:bg-neutralWhite-400 transition-colors"
-                     h={20}
-                     w={20}
-                     {...link}
-                     isLink={href}
-                  />
-                  {index !== linksData.length - 1 && (
-                     <div className="h-px bg-neutralWhite-400 mx-8 max-lg:mx-4"></div>
-                  )}
-               </li>
-            );
-         })}
+         <li className="relative">
+            <Link
+               href={ROUTES.home}
+               className={cn(
+                  'flex gap-2.5 py-3.5 items-center textBody-medium text-neutralBlack-600 hover:bg-neutralWhite-400 cursor-pointer',
+                  'px-4',
+                  'lg:px-8'
+               )}
+            >
+               <Image src={HomeIco} alt="home" width={20} height={20} />
+               <p className="flex-1">Главная</p>
+            </Link>
+            <div className="h-px bg-neutralWhite-400 mx-8 max-lg:mx-4"></div>
+         </li>
+         <li className="relative">
+            <Link
+               href={username ? ROUTES.main.profile(username) : ROUTES.home}
+               className={cn(
+                  'flex gap-2.5 py-3.5 items-center textBody-medium text-neutralBlack-600 hover:bg-neutralWhite-400 cursor-pointer',
+                  'px-4',
+                  'lg:px-8'
+               )}
+            >
+               <Image src={ProfileIco} alt="profile" width={20} height={20} />
+               <p className="flex-1">Профиль</p>
+            </Link>
+            <div className="h-px bg-neutralWhite-400 mx-8 max-lg:mx-4"></div>
+         </li>
+         <li className="relative">
+            <Link
+               href={ROUTES.home}
+               className={cn(
+                  'flex gap-2.5 py-3.5 items-center textBody-medium text-neutralBlack-600 hover:bg-neutralWhite-400 cursor-pointer',
+                  'px-4',
+                  'lg:px-8'
+               )}
+            >
+               <Image src={MessagesIco} alt="messages" width={20} height={20} />
+               <p className="flex-1">Сообщения</p>
+            </Link>
+            <div className="h-px bg-neutralWhite-400 mx-8 max-lg:mx-4"></div>
+         </li>
+         <li className="relative">
+            <Link
+               href={ROUTES.main.notifications}
+               className={cn(
+                  'flex gap-2.5 py-3.5 items-center textBody-medium text-neutralBlack-600 hover:bg-neutralWhite-400 cursor-pointer',
+                  'px-4',
+                  'lg:px-8'
+               )}
+            >
+               <Image
+                  src={NotificationsIco}
+                  alt="notifications"
+                  width={20}
+                  height={20}
+               />
+               <p className="flex-1">Уведомления</p>
+               {notificationsState && notificationsState.unseenCount > 0 && (
+                  <div className="textLabel-medium text-neutralWhite-100 bg-primary-900 rounded-full size-5 flex items-center justify-center">
+                     {notificationsState.unseenCount}
+                  </div>
+               )}
+            </Link>
+         </li>
       </ul>
    );
 };

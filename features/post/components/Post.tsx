@@ -6,16 +6,10 @@ import ActionBlock from './post-footer/ActionBlock';
 import ViewTracker from './ViewTracker';
 import { useRef } from 'react';
 
-const Post = ({
-   post,
-   editable,
-}: {
-   post: PostResponse;
-   editable?: boolean;
-}) => {
+const Post = ({ post }: { post: PostResponse }) => {
    const permissions = {
       canDelete: post.isOwned,
-      canEdit: editable ?? false,
+      canEdit: post.isOwned ?? false,
       canReport: !post.isOwned,
    };
 

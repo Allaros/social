@@ -2,14 +2,12 @@
 
 import Post from '@/features/post/components/Post';
 import { PostResponse } from '@/features/post/types/post.responce';
+import { ProfileListItem } from '@/features/profile/types/profile.interface';
 import ProfileSearchItem from '@/features/search/components/searchItems/ProfileSearchItem';
 import SearchPagination from '@/features/search/components/SearchPagination';
 import SearchTabs from '@/features/search/components/SearchTabs';
 import { useGetSearchResults } from '@/features/search/hooks/useGetSearchResults';
-import {
-   ProfileItemResponse,
-   SearchSections,
-} from '@/features/search/types/response';
+import { SearchSections } from '@/features/search/types/response';
 import { useSearchParams } from 'next/navigation';
 
 const SearchPage = () => {
@@ -32,25 +30,19 @@ const SearchPage = () => {
 
    const { total } = meta;
 
+   console.log(results);
    return (
       <div className="card">
          <SearchTabs type={type as SearchSections} />
          <SearchPagination total={total} limit={limit} page={page} />
          <div className="flex flex-col my-6 max-md:my-4">
             {type === 'profiles' &&
-               results.map((item: ProfileItemResponse, i: number) => (
-                  <ProfileSearchItem
-                     key={i}
-                     id={item.id}
-                     name={item.name}
-                     username={item.username}
-                     avatarUrl={item.avatarUrl}
-                     bio={item.bio}
-                  />
+               results.map((item: ProfileListItem) => (
+                  <ProfileSearchItem key={item.id} profile={item} />
                ))}
             {type === 'posts' &&
-               results.map((item: PostResponse, i: number) => (
-                  <Post post={item} editable={false} key={i} />
+               results.map((item: PostResponse) => (
+                  <Post post={item} key={item.id} />
                ))}
          </div>
          <SearchPagination total={total} limit={limit} page={page} />
