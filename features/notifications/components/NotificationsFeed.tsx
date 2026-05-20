@@ -21,7 +21,7 @@ const NotificationsFeed = () => {
       return <EmptyPage preset="emptyNotifications" />;
    return (
       <div className="py-4">
-         <FramedList layoutMode="items" preset="notifications">
+         <FramedList preset="notifications">
             {notifications.map((notification) => (
                <FramedItem key={notification.id} id={`${notification.id}`}>
                   {' '}

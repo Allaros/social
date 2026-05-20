@@ -36,9 +36,11 @@ const NotificationItem = ({
          : [notification.actor];
 
    const handleNotificationClick = (expanded: boolean, username?: string) => {
-      if (mode === 'default') {
+      const notificationNavigation =
+         username && (mode === 'detailed' || !isAggregated);
+      if (mode === 'default' && !notificationNavigation) {
          setExpanded(!expanded);
-      } else if (username && mode === 'detailed') {
+      } else if (notificationNavigation) {
          router.push(ROUTES.main.profile(username));
       }
    };
@@ -89,6 +91,7 @@ const NotificationItem = ({
             <div className="flex items-center gap-2">
                {isAggregated && mode === 'default' && (
                   <button
+                     className="cursor-pointer hover:bg-neutralWhite-500"
                      onClick={(e) => {
                         e.stopPropagation();
                         setExpanded(!expanded);

@@ -10,6 +10,7 @@ import NotificationsImg from '@/public/icons/Notification.svg';
 import SearchImg from '@/public/icons/Search.svg';
 import HomeImg from '@/public/icons/Home.svg';
 import { useDrawer } from '@/features/drawer/provider/drawerProvider';
+import { useNotificationsState } from '@/features/notifications/hooks/useNotificationsCount';
 
 const LinksPanel = () => {
    const isMobile = useIsMobile();
@@ -18,6 +19,7 @@ const LinksPanel = () => {
 
    const lenis = useLenisInstance();
    const direction = useScrollDirection(lenis);
+   const { data: notificationsState } = useNotificationsState();
 
    if (!isMobile) return null;
 
@@ -46,13 +48,20 @@ const LinksPanel = () => {
             </li>
 
             <li className="p-4">
-               <Link href={ROUTES.home}>
+               <Link href={ROUTES.main.notifications} className="relative">
                   <Image
                      src={NotificationsImg}
                      alt={'notifications'}
                      width={22}
                      height={22}
                   />
+                  {notificationsState && notificationsState.unseenCount > 0 && (
+                     <div className=" absolute -top-1 -right-1 textLabel-medium text-neutralWhite-100 bg-primary-900 rounded-full size-4 flex items-center justify-center">
+                        {notificationsState.unseenCount < 99
+                           ? notificationsState.unseenCount
+                           : '99+'}
+                     </div>
+                  )}
                </Link>
             </li>
 

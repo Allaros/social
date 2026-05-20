@@ -4,6 +4,7 @@ export type ProfileListItem = {
    username: string;
    avatarUrl?: string;
    bio?: string;
+   lastSeenAt: Date;
 
    isOwner: boolean;
    isFollowed: boolean;

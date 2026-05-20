@@ -36,7 +36,7 @@ const LoadMoreTrigger = ({
             });
          },
          {
-            root, // 💥 ключевая часть
+            root,
             rootMargin,
          }
       );

@@ -16,6 +16,8 @@ interface ProfileResponce {
    isOwner?: boolean;
    isFollowed?: boolean;
    isFollower?: boolean;
+   isOnline?: boolean;
+   lastSeenAt: Date;
 }
 
 interface MeResponce {

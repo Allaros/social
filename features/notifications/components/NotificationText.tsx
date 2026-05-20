@@ -44,7 +44,7 @@ const NotificationText = ({
             <span className="text-nowrap">
                {total > 1 ? preset.aggregated : preset.single}
             </span>{' '}
-            {textPreview && <span>"{textPreview}"</span>}
+            {textPreview && <span className="italic">"{textPreview}..."</span>}
          </p>
       );
    }

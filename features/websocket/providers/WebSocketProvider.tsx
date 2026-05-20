@@ -6,6 +6,7 @@ import { registerWebSocketListeners } from '../listeners/websocket.listener';
 import { registerNotificationListeners } from '@/features/notifications/realtime/notifications.listener';
 import { useQueryClient } from '@tanstack/react-query';
 import { registerProfileListener } from '@/features/profile/realtime/profile.listener';
+import { registerRelationsPresenceListener } from '@/features/friends/realtime/relation.listener';
 
 export const WebSocketContext = createContext(null);
 
@@ -30,10 +31,16 @@ export const WebSocketProvider = ({
          queryClient
       );
 
+      const cleanupRelationListeners = registerRelationsPresenceListener(
+         socket,
+         queryClient
+      );
+
       return () => {
          cleanupSocketListeners();
          cleanupNotificationListeners();
          cleanupProfileListeners();
+         cleanupRelationListeners();
 
          disconnectSocket();
       };

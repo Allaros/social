@@ -37,16 +37,18 @@ const ProfileSearchItem = ({ profile }: { profile: ProfileListItem }) => {
                {profile.bio && !isMobile && <div>{profile.bio}</div>}
             </div>
          </div>
-         <ActionButtons
-            link={ROUTES.main.profile(profile.username)}
-            func={() =>
-               toggleFollow({
-                  profileId: profile.id,
-                  isFollowed: profile.isFollowed ?? false,
-               })
-            }
-            isFollowed={profile.isFollowed}
-         />
+         {!profile.isOwner && (
+            <ActionButtons
+               link={ROUTES.main.profile(profile.username)}
+               func={() =>
+                  toggleFollow({
+                     profileId: profile.id,
+                     isFollowed: profile.isFollowed ?? false,
+                  })
+               }
+               isFollowed={profile.isFollowed}
+            />
+         )}
       </div>
    );
 };

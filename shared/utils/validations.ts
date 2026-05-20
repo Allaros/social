@@ -188,3 +188,7 @@ export const UpdatePostSchema = z.object({
 export const CreateCommentSchema = z.object({
    body: z.string().min(1, { error: 'Нельзя оставить пустой комментарий' }),
 });
+
+export const FriendsSearchSchema = z.object({
+   query: z.string(),
+});

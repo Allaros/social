@@ -13,6 +13,9 @@ const ROUTES = {
    main: {
       profile: (username: string) => `/profile/${username}`,
       notifications: '/notifications',
+      friends: '/friends',
+      chats: '/chats',
+      chat: (identifier: string) => `/chats/${identifier}`,
    },
 };
 

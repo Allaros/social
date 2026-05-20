@@ -75,6 +75,41 @@ export const framedPresets: Record<
          },
       },
    },
+   relations: {
+      stagger: 0.04,
+
+      layout: false,
+      mode: 'sync',
+
+      item: {
+         initial: (index: number) => ({
+            opacity: 0,
+            x: -10 - index * 2,
+         }),
+
+         animate: {
+            opacity: 1,
+            x: 0,
+         },
+
+         exit: {
+            opacity: 0,
+            x: -6,
+         },
+
+         transition: {
+            opacity: {
+               duration: 0.18,
+            },
+
+            x: {
+               type: 'spring',
+               stiffness: 380,
+               damping: 34,
+            },
+         },
+      },
+   },
 
    minimal: {
       stagger: 0,

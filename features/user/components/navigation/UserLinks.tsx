@@ -1,6 +1,5 @@
 'use client';
 import { useMe } from '@/features/auth/hooks/useMe';
-import { UserLinksInterface } from '@/features/user/constants/UserLinksData';
 import NotificationsIco from '@/public/icons/Notification.svg';
 import MessagesIco from '@/public/icons/Send.svg';
 import HomeIco from '@/public/icons/Home.svg';
@@ -10,6 +9,7 @@ import Link from 'next/link';
 import ROUTES from '@/shared/constants/routes';
 import { cn } from '@/shared/lib/utils';
 import { useNotificationsState } from '@/features/notifications/hooks/useNotificationsCount';
+import { Users } from 'lucide-react';
 
 const UserLinks = () => {
    const { data: user } = useMe();
@@ -47,7 +47,7 @@ const UserLinks = () => {
          </li>
          <li className="relative">
             <Link
-               href={ROUTES.home}
+               href={ROUTES.main.chats}
                className={cn(
                   'flex gap-2.5 py-3.5 items-center textBody-medium text-neutralBlack-600 hover:bg-neutralWhite-400 cursor-pointer',
                   'px-4',
@@ -80,6 +80,20 @@ const UserLinks = () => {
                      {notificationsState.unseenCount}
                   </div>
                )}
+            </Link>
+            <div className="h-px bg-neutralWhite-400 mx-8 max-lg:mx-4"></div>
+         </li>
+         <li className="relative">
+            <Link
+               href={ROUTES.main.friends}
+               className={cn(
+                  'flex gap-2.5 py-3.5 items-center textBody-medium text-neutralBlack-600 hover:bg-neutralWhite-400 cursor-pointer',
+                  'px-4',
+                  'lg:px-8'
+               )}
+            >
+               <Users />
+               <p className="flex-1">Подписки</p>
             </Link>
          </li>
       </ul>

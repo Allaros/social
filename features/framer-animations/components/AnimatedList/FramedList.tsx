@@ -10,6 +10,7 @@ type Props = {
    preset?: FramedPreset;
    stagger?: number;
    layoutMode?: LayoutMode;
+   className?: string;
 };
 
 export const FramedList = ({
@@ -17,6 +18,7 @@ export const FramedList = ({
    preset = 'feed',
    stagger,
    layoutMode = 'full',
+   className,
 }: Props) => {
    const config = framedPresets[preset];
 
@@ -39,7 +41,7 @@ export const FramedList = ({
          variants={containerVariants}
          initial="hidden"
          animate="show"
-         className="flex flex-col gap-4"
+         className={`flex flex-col gap-4 ${className}`}
       >
          <AnimatePresence initial={false} mode={config.mode}>
             {React.Children.map(children, (child, index) => (

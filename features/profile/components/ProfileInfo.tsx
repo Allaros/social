@@ -2,6 +2,7 @@
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import AvatarComponent from '@/features/user/components/AvatarComponent';
 import { cn } from '@/shared/lib/utils';
+import { formatLastSeen } from '@/shared/utils/dating';
 const ProfileInfo = ({
    profile,
    isError,
@@ -22,6 +23,7 @@ const ProfileInfo = ({
                <AvatarComponent
                   avatarUrl={profile.avatarUrl}
                   name={profile.name}
+                  isOnline={profile.isOnline}
                />
             )}
          </div>
@@ -50,7 +52,13 @@ const ProfileInfo = ({
                   )}
                </span>
             </div>
-            <div className="mt-2 textLabel text-neutralBlack-400">
+            <div className="textLabel text-neutralBlack-500 md:text-left text-center">
+               {formatLastSeen({
+                  isOnline: profile?.isOnline ?? false,
+                  lastSeenAt: profile?.lastSeenAt,
+               })}
+            </div>
+            <div className="mt-2 textLabel text-neutralBlack-400 md:text-left text-center">
                {!profile ? <Skeleton className="h-3.5 w-30" /> : profile.bio}
             </div>
          </div>
