@@ -17,7 +17,7 @@ const RelationStartChatButton = ({ receiverId }: { receiverId: number }) => {
          { receiverId },
          {
             onSuccess: (data) => {
-               router.push(`${ROUTES.main.chats}/${data.identifier}`);
+               router.push(`${ROUTES.main.chats}?chat=${data.identifier}`);
             },
          }
       );

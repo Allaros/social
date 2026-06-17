@@ -1,10 +1,11 @@
 import { api } from '@/shared/api/axios';
 import {
-   AttachmentUploadUrlResponse,
    CreateMessagePayload,
+   ForwardPayload,
    GetAttachmentUploadUrlPayload,
    GetMessagesParams,
-} from '../types/messages.types';
+} from '../types/messages.request';
+import { AttachmentUploadUrlResponse } from '../types/messages.types';
 
 export const messagesApi = {
    getMessages: async (chatIdentifier: string, params?: GetMessagesParams) => {
@@ -44,5 +45,66 @@ export const messagesApi = {
             'Content-Type': file.type,
          },
       });
+   },
+
+   setReadMessages: async ({
+      chatIdentifier,
+      lastMessageId,
+      messageIds,
+   }: {
+      chatIdentifier: string;
+      messageIds: number[];
+      lastMessageId: number;
+   }) => {
+      const { data } = await api.put(`chats/${chatIdentifier}/read`, {
+         lastMessageId,
+         messageIds,
+      });
+
+      return data;
+   },
+
+   deleteMessages: async (chatIdentifier: string, messageIds: number[]) => {
+      const { data } = await api.post(
+         `chats/${chatIdentifier}/messages/delete`,
+         { messageIds }
+      );
+   },
+
+   hideMessages: async (chatIdentifier: string, messageIds: number[]) => {
+      const { data } = await api.post(`chats/${chatIdentifier}/messages/hide`, {
+         messageIds,
+      });
+   },
+
+   editMessage: async ({
+      chatIdentifier,
+      messageId,
+      text,
+   }: {
+      chatIdentifier: string;
+      messageId: number;
+      text: string;
+   }) => {
+      const { data } = await api.put(
+         `chats/${chatIdentifier}/messages/${messageId}`,
+         { text }
+      );
+
+      return data;
+   },
+
+   forwardMessages: async ({
+      chatIdentifier,
+      forwardPayload,
+   }: {
+      chatIdentifier: string;
+      forwardPayload: ForwardPayload[];
+   }) => {
+      const { data } = await api.post(
+         `chats/${chatIdentifier}/messages/forward`,
+         { forwardPayload }
+      );
+      return data;
    },
 };

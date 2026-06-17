@@ -11,6 +11,8 @@ import SearchImg from '@/public/icons/Search.svg';
 import HomeImg from '@/public/icons/Home.svg';
 import { useDrawer } from '@/features/drawer/provider/drawerProvider';
 import { useNotificationsState } from '@/features/notifications/hooks/useNotificationsCount';
+import { cn } from '@/shared/lib/utils';
+import { useSearchParams } from 'next/navigation';
 
 const LinksPanel = () => {
    const isMobile = useIsMobile();
@@ -21,19 +23,27 @@ const LinksPanel = () => {
    const direction = useScrollDirection(lenis);
    const { data: notificationsState } = useNotificationsState();
 
+   const searchParams = useSearchParams();
+
+   const activeIdentifier = searchParams.get('chat');
+
    if (!isMobile) return null;
 
    return (
       <div
-         className={`fixed bottom-0 left-0 w-full transition-transform  duration-500 ${direction === 'down' ? 'translate-y-full' : 'translate-y-0'}`}
+         className={cn(
+            'fixed bottom-0 left-0 w-full transition-transform  duration-500',
+            direction === 'down' ? 'translate-y-full' : 'translate-y-0',
+            !!activeIdentifier && 'translate-y-full'
+         )}
       >
          <ul className="py-1.5 px-4 flex items-center justify-between gap-4 bg-neutralWhite-100 ">
-            <li className="p-4">
+            <li className="p-3">
                <Link href={ROUTES.home}>
                   <Image src={HomeImg} alt={'home'} width={22} height={22} />
                </Link>
             </li>
-            <li className="p-4">
+            <li className="p-3">
                <button
                   onClick={openSearch}
                   className="flex items-center justify-center"
@@ -47,7 +57,7 @@ const LinksPanel = () => {
                </button>
             </li>
 
-            <li className="p-4">
+            <li className="p-3">
                <Link href={ROUTES.main.notifications} className="relative">
                   <Image
                      src={NotificationsImg}
@@ -65,7 +75,7 @@ const LinksPanel = () => {
                </Link>
             </li>
 
-            <li className="p-4">
+            <li className="p-3">
                <Link
                   href={
                      profile?.username

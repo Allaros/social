@@ -1,19 +1,25 @@
 'use client';
 import { useProfile } from '@/features/profile/hooks/useProfile';
 import AvatarComponent from './AvatarComponent';
+import { cn } from '@/shared/lib/utils';
 
 const UserInfo = () => {
    const profile = useProfile();
    return (
       <div>
-         <div className="flex flex-col gap-4 mt-11 px-8 max-lg:px-4">
+         <div className="flex flex-col gap-4 px-8 max-lg:px-4">
             <div className="rounded-full border border-neutralWhite-100 relative w-14 h-14 overflow-hidden">
                <AvatarComponent
                   avatarUrl={profile?.avatarUrl}
                   name={profile?.name}
                />
             </div>
-            <div className="flex flex-col gap-0.5 items-start">
+            <div
+               className={cn(
+                  'flex flex-col gap-0.5 items-start',
+                  'max-lg:hidden'
+               )}
+            >
                <p className="textBody-medium text-neutralBlack-900 font-(--font-inter)">
                   {profile?.name}
                </p>

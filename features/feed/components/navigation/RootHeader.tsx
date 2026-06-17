@@ -8,11 +8,17 @@ import { useIsMobile } from '@/shared/hooks/useIsMobile';
 import CustomButton from '@/shared/components/CustomButton';
 import SendIcon from '@/public/icons/Send.svg';
 import Logo2 from '@/public/icons/Logomark.svg';
-const RootHeader = () => {
+import { cn } from '@/shared/lib/utils';
+const RootHeader = ({ hideHeader }: { hideHeader: boolean }) => {
    const isMobile = useIsMobile();
 
    return (
-      <div className="fixed w-full top-0 left-0 bg-neutralWhite-100 z-20">
+      <div
+         className={cn(
+            'fixed w-full top-0 left-0 bg-neutralWhite-100 z-20',
+            hideHeader && 'hidden'
+         )}
+      >
          <nav className="grid max-w-7xl mx-auto grid-cols-[3fr_6fr_3fr]  max-lg:grid-cols-[3fr_5fr_3fr] gap-1.5 max-md:grid-cols-2 items-center py-4.5 px-6 box-border">
             <Link className="flex items-center gap-3" href={ROUTES.home}>
                <Image
@@ -31,7 +37,7 @@ const RootHeader = () => {
                      alt="messages"
                      h={20}
                      w={20}
-                     buttonFunc={() => console.log('clicked')}
+                     isLink={ROUTES.main.chats}
                   />
                </>
             ) : (

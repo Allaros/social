@@ -16,7 +16,7 @@ const UserLinks = () => {
    const { data: notificationsState } = useNotificationsState();
    const username = user?.profile?.username;
    return (
-      <ul className="pb-8">
+      <ul className={cn('flex flex-col', 'items-center', 'lg:items-stretch')}>
          <li className="relative">
             <Link
                href={ROUTES.home}
@@ -27,7 +27,7 @@ const UserLinks = () => {
                )}
             >
                <Image src={HomeIco} alt="home" width={20} height={20} />
-               <p className="flex-1">Главная</p>
+               <p className="flex-1 max-lg:hidden">Главная</p>
             </Link>
             <div className="h-px bg-neutralWhite-400 mx-8 max-lg:mx-4"></div>
          </li>
@@ -41,7 +41,7 @@ const UserLinks = () => {
                )}
             >
                <Image src={ProfileIco} alt="profile" width={20} height={20} />
-               <p className="flex-1">Профиль</p>
+               <p className="flex-1 max-lg:hidden">Профиль</p>
             </Link>
             <div className="h-px bg-neutralWhite-400 mx-8 max-lg:mx-4"></div>
          </li>
@@ -55,7 +55,7 @@ const UserLinks = () => {
                )}
             >
                <Image src={MessagesIco} alt="messages" width={20} height={20} />
-               <p className="flex-1">Сообщения</p>
+               <p className="flex-1 max-lg:hidden">Сообщения</p>
             </Link>
             <div className="h-px bg-neutralWhite-400 mx-8 max-lg:mx-4"></div>
          </li>
@@ -74,7 +74,7 @@ const UserLinks = () => {
                   width={20}
                   height={20}
                />
-               <p className="flex-1">Уведомления</p>
+               <p className="flex-1 max-lg:hidden">Уведомления</p>
                {notificationsState && notificationsState.unseenCount > 0 && (
                   <div className="textLabel-medium text-neutralWhite-100 bg-primary-900 rounded-full size-5 flex items-center justify-center">
                      {notificationsState.unseenCount}
@@ -93,7 +93,7 @@ const UserLinks = () => {
                )}
             >
                <Users />
-               <p className="flex-1">Подписки</p>
+               <p className="flex-1 max-lg:hidden">Подписки</p>
             </Link>
          </li>
       </ul>

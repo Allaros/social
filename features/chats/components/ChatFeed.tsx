@@ -10,9 +10,9 @@ const ChatFeed = () => {
    const { data, fetchNextPage, hasNextPage, isFetching } = useGetChats();
 
    const chats = data?.pages.flatMap((page) => page.data) ?? [];
-   if (!chats.length) return <EmptyPage preset="emptyFeed" />;
+   if (!chats.length) return <EmptyPage preset="emptyChats" />;
    return (
-      <div>
+      <div className="py-2 flex flex-col">
          {chats.map((chat) => (
             <Chat chat={chat} key={chat.id} />
          ))}

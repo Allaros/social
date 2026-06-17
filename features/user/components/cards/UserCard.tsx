@@ -9,16 +9,16 @@ const UserCard = () => {
    const isMobile = useIsMobile();
    if (isMobile) return null;
    return (
-      <div className="card relative ">
-         <div className="absolute top-0 left-0 w-full h-18">
+      <div className="card relative">
+         {/* <div className="absolute top-0 left-0 w-full h-18">
             <Image
                src={Cover}
                alt="cover"
                fill
                className="object-cover rounded-t-[6px]"
             />
-         </div>
-         <div className="flex flex-col gap-4">
+         </div> */}
+         <div className="flex flex-col gap-4 py-8 max-lg:py-4">
             <UserInfo />
 
             <UserLinks />

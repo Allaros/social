@@ -192,3 +192,7 @@ export const CreateCommentSchema = z.object({
 export const FriendsSearchSchema = z.object({
    query: z.string(),
 });
+
+export const messageSchema = z.object({
+   text: z.string().max(4000).optional(),
+});

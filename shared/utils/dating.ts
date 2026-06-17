@@ -5,6 +5,7 @@ import {
    isToday,
    isYesterday,
 } from 'date-fns';
+import { ru } from 'date-fns/locale';
 
 export function formatPostDate(createdAt: Date | string): string {
    const now = new Date();
@@ -94,11 +95,11 @@ export function formatLastSeen({
 
    // в этом году
    if (isThisYear(date)) {
-      return `был(а) ${format(date, 'd MMM')} в ${format(date, 'HH:mm')}`;
+      return `был(а) ${format(date, 'd MMM', { locale: ru })} в ${format(date, 'HH:mm', { locale: ru })}`;
    }
 
    // старые даты
-   return `был(а) ${format(date, 'd MMM yyyy')} в ${format(date, 'HH:mm')}`;
+   return `был(а) ${format(date, 'd MMM yyyy', { locale: ru })} в ${format(date, 'HH:mm')}`;
 }
 
 function pluralizeMinutes(minutes: number): string {
@@ -115,3 +116,10 @@ function pluralizeMinutes(minutes: number): string {
 
    return `${minutes} минут`;
 }
+
+export const formatMessageTime = (date: string | Date): string => {
+   return new Date(date).toLocaleTimeString('ru-RU', {
+      hour: '2-digit',
+      minute: '2-digit',
+   });
+};

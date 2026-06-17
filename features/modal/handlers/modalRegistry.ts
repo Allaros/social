@@ -1,5 +1,6 @@
 import { ModalType } from '../constants/modals';
 import ConfirmModal from '../modals/ConfirmModal';
+import DeleteMessagesModal from '../modals/DeleteMessagesModal';
 import PostEditModal from '../modals/PostEditModal';
 import PostSettingsModal from '../modals/PostSettingsModal';
 import PreviewModal from '../modals/PreviewModal';
@@ -15,4 +16,5 @@ export const modalRegistry: {
    preview: PreviewModal,
    postSettings: PostSettingsModal,
    postEdit: PostEditModal,
+   messageDelete: DeleteMessagesModal,
 };

@@ -12,6 +12,11 @@ export const chatsApi = {
       return data;
    },
 
+   getActiveChat: async (identifier?: string) => {
+      const { data } = await api.get(`chats/${identifier}`);
+      return data;
+   },
+
    createDirectChat: async (payload: CreateDirectChatPayload) => {
       const { data } = await api.post('chats/direct', payload);
       return data;

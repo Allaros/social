@@ -224,3 +224,37 @@ body {
    width: 2px;
    height: 12px;
 }
+
+.gradientBgBlack {
+   background: #000000;
+   background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.1) 100%
+   );
+}
+
+.scrollbar-custom {
+   scrollbar-width: thin;
+   scrollbar-color: rgb(212 212 212) transparent;
+}
+
+.scrollbar-custom::-webkit-scrollbar {
+   width: 6px;
+   height: 6px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+   background: transparent;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+   background-color: rgb(212 212 212);
+   border-radius: 9999px;
+   border: 2px solid transparent;
+   background-clip: content-box;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+   background-color: rgb(163 163 163);
+}

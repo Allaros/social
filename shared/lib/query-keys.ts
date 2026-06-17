@@ -1,4 +1,5 @@
 import { GetMyChatsParams } from '@/features/chats/types/chats.request';
+import { GetMessagesParams } from '@/features/messages/types/messages.request';
 
 export const searchKeys = {
    all: ['search'] as const,
@@ -54,6 +55,19 @@ export const chatsKeys = {
 
    details: () => [...chatsKeys.all, 'detail'] as const,
 
-   detail: (identifier: string) =>
+   detail: (identifier?: string) =>
       [...chatsKeys.details(), identifier] as const,
+};
+
+export const messagesKeys = {
+   all: ['messages'] as const,
+   lists: () => [...messagesKeys.all, 'list'] as const,
+   list: (identifier: string, params?: Omit<GetMessagesParams, 'cursor'>) =>
+      [
+         ...messagesKeys.lists(),
+         identifier,
+         {
+            query: params?.query ?? '',
+         },
+      ] as const,
 };

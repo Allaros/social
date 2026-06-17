@@ -14,9 +14,9 @@ const AvatarComponent = ({
    className,
    z,
 }: {
-   name?: string;
+   name?: string | null;
    isOnline?: boolean;
-   avatarUrl?: string;
+   avatarUrl?: string | null;
    className?: string;
    z?: number;
 }) => {
@@ -24,7 +24,7 @@ const AvatarComponent = ({
       <Avatar style={{ zIndex: z }} className={`w-full h-full  ${className}`}>
          <AvatarImage
             className="rounded-full"
-            src={avatarUrl}
+            src={avatarUrl ?? undefined}
             alt={`${name} avatar`}
          />
          <AvatarFallback className=" text-neutralWhite-100 bg-linear-to-br from-primary-900 via-primary-700 to-primary-400">

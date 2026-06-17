@@ -15,7 +15,7 @@ const ROUTES = {
       notifications: '/notifications',
       friends: '/friends',
       chats: '/chats',
-      chat: (identifier: string) => `/chats/${identifier}`,
+      chat: (identifier: string) => `/chats?chat=${identifier}`,
    },
 };
 
