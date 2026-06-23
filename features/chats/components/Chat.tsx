@@ -6,6 +6,7 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { cn } from '@/shared/lib/utils';
 import Link from 'next/link';
 import ROUTES from '@/shared/constants/routes';
+import { MessagesTypeEnum } from '@/features/messages/types/messages.types';
 
 const Chat = ({ chat }: { chat: ChatListItem }) => {
    const searchParams = useSearchParams();
@@ -21,7 +22,7 @@ const Chat = ({ chat }: { chat: ChatListItem }) => {
       <Link
          href={ROUTES.main.chat(chat.identifier)}
          className={cn(
-            `flex py-2 items-center max-lg:justify-center gap-4 px-4 transition-colors duration-300 hover:bg-neutralWhite-400 ${isActive ? 'bg-neutralWhite-500' : 'bg-neutralWhite-100'}`,
+            `flex py-2 items-center max-lg:justify-center max-md:justify-start gap-4 px-4 transition-colors duration-300 hover:bg-neutralWhite-400 ${isActive ? 'bg-neutralWhite-500' : 'bg-neutralWhite-100'}`,
             '',
             ''
          )}
@@ -35,11 +36,11 @@ const Chat = ({ chat }: { chat: ChatListItem }) => {
             ></AvatarComponent>
          </div>
 
-         <div className="flex flex-col max-lg:hidden ">
+         <div className="flex flex-col max-lg:hidden max-md:flex ">
             <div className="h6">{chat.title ?? titleFallback}</div>
             {chat.lastMessage?.createdAt && chat.lastMessage.text && (
                <div className="textLabel text-neutralBlack-600">
-                  <p className="line-clamp-1">{`${chat.lastMessage.senderName}: ${chat.lastMessage.text}`}</p>
+                  <p className="line-clamp-1">{`${!chat.lastMessage.senderName || chat.lastMessage.type === MessagesTypeEnum.SYSTEM ? '' : `${chat.lastMessage.senderName}:`} ${chat.lastMessage.text}`}</p>
                   <p>{formatPostDate(chat.lastMessage.createdAt)}</p>
                </div>
             )}

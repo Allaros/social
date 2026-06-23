@@ -1,3 +1,4 @@
+import { MessagesTypeEnum } from '@/features/messages/types/messages.types';
 import { InfiniteData } from '@tanstack/react-query';
 
 export interface LastMessagePreview {
@@ -5,6 +6,7 @@ export interface LastMessagePreview {
    senderName: string | null;
    senderAvatarUrl: string | null;
    createdAt: string | null;
+   type: MessagesTypeEnum;
 }
 
 export interface ChatListItem {
@@ -59,6 +61,9 @@ export interface ChatDetail {
 
    isOnline: boolean;
    isSelfChat: boolean;
+   isMuted: boolean;
+   isLeft: boolean;
+   canSendMessages: boolean;
 
    description: string | null;
 }

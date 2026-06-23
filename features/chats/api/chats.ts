@@ -12,7 +12,7 @@ export const chatsApi = {
       return data;
    },
 
-   getActiveChat: async (identifier?: string) => {
+   getActiveChat: async (identifier?: string | null) => {
       const { data } = await api.get(`chats/${identifier}`);
       return data;
    },
@@ -29,6 +29,82 @@ export const chatsApi = {
 
    createChannel: async (payload: CreateChannelPayload) => {
       const { data } = await api.post('chats/channel', payload);
+      return data;
+   },
+
+   leaveChat: async (chatIdentifier: string) => {
+      const { data } = await api.post(`chats/${chatIdentifier}/leave`);
+
+      return data;
+   },
+
+   rejoinChat: async (chatIdentifier: string) => {
+      const { data } = await api.post(`chats/${chatIdentifier}/rejoin`);
+
+      return data;
+   },
+
+   addMember: async ({
+      chatIdentifier,
+      targetProfileId,
+   }: {
+      chatIdentifier: string;
+      targetProfileId: number;
+   }) => {
+      const { data } = await api.post(`chats/${chatIdentifier}/members`, {
+         targetProfileId,
+      });
+
+      return data;
+   },
+
+   kickMember: async ({
+      chatIdentifier,
+      targetProfileId,
+      restrictedUntil,
+   }: {
+      chatIdentifier: string;
+      targetProfileId: number;
+      restrictedUntil: string | null;
+   }) => {
+      const { data } = await api.post(`chats/${chatIdentifier}/kick`, {
+         targetProfileId,
+         restrictedUntil,
+      });
+
+      return data;
+   },
+
+   unbanMember: async ({
+      chatIdentifier,
+      targetProfileId,
+   }: {
+      chatIdentifier: string;
+      targetProfileId: number;
+   }) => {
+      const { data } = await api.post(`chats/${chatIdentifier}/unban`, {
+         targetProfileId,
+      });
+
+      return data;
+   },
+
+   deleteDirect: async (chatIdentifier: string) => {
+      const { data } = await api.delete(
+         `chats/${chatIdentifier}/delete/direct`
+      );
+
+      return data;
+   },
+
+   deleteGroup: async (chatIdentifier: string) => {
+      const { data } = await api.delete(`chats/${chatIdentifier}/delete/group`);
+
+      return data;
+   },
+
+   toggleMute: async (chatIdentifier: string) => {
+      const { data } = await api.put(`chats/${chatIdentifier}/toggle-mute`);
       return data;
    },
 };

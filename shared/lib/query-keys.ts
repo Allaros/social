@@ -55,7 +55,7 @@ export const chatsKeys = {
 
    details: () => [...chatsKeys.all, 'detail'] as const,
 
-   detail: (identifier?: string) =>
+   detail: (identifier?: string | null) =>
       [...chatsKeys.details(), identifier] as const,
 };
 

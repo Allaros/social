@@ -14,6 +14,7 @@ export type CreateMessagePayload = {
    text?: string;
    attachments?: MessageAttachmentPayload[];
    replyToMessageId?: number;
+   clientId: string;
 };
 
 export type GetAttachmentUploadUrlPayload = {

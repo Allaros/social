@@ -16,7 +16,6 @@ const ReplyForwardPreview = ({
    text?: string | null;
    isOwn: boolean;
 }) => {
-   console.log(mode);
    const replyText = reply?.text?.trim();
    return (
       <div

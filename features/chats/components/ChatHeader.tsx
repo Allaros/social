@@ -10,10 +10,16 @@ import ChatActionsPanel from './ChatActionsPanel';
 import { ArrowLeft } from 'lucide-react';
 import ROUTES from '@/shared/constants/routes';
 
+import InfoDialog from './InfoDialog';
+
 const ChatHeader = () => {
    const searchParams = useSearchParams();
 
-   const activeIdentifier = searchParams.get('chat') ?? undefined;
+   const isMobile = useIsMobile();
+
+   const router = useRouter();
+
+   const activeIdentifier = searchParams.get('chat');
 
    const [visibleChat, setVisibleChat] = useState<string | undefined>(
       undefined
@@ -24,34 +30,40 @@ const ChatHeader = () => {
          setVisibleChat(activeIdentifier);
       }
    }, [activeIdentifier]);
-   const isMobile = useIsMobile();
-   const router = useRouter();
 
-   const { data: chat } = useGetActiveChat(visibleChat);
+   const chatIdentifier = isMobile ? visibleChat : activeIdentifier;
 
-   if (!visibleChat) return null;
+   const { data: chat } = useGetActiveChat(chatIdentifier);
+
+   if (!chatIdentifier) return null;
 
    if (!chat) return null;
 
    return (
       <div className="py-2 px-4 flex justify-between gap-4 items-center relative">
-         <div className="flex items-center gap-2">
-            <div className="md:hidden size-12">
-               <AvatarComponent avatarUrl={chat?.avatarUrl} name={chat?.name} />
+         <InfoDialog chatInfo={chat}>
+            <div className="flex items-center gap-2">
+               <div className="md:hidden size-12">
+                  <AvatarComponent
+                     avatarUrl={chat?.avatarUrl}
+                     name={chat?.name}
+                  />
+               </div>
+               <div>
+                  <p className="h6">{chat?.name ?? chat?.title}</p>
+                  <p className="textLabel">
+                     {chat?.type === 'direct'
+                        ? formatLastSeen({
+                             isOnline: chat.isOnline,
+                             lastSeenAt: chat.lastSeenAt,
+                          })
+                        : chat?.membersCount}
+                  </p>
+               </div>
             </div>
-            <div>
-               <p className="h6">{chat?.name ?? chat?.title}</p>
-               <p className="textLabel">
-                  {chat?.type === 'direct'
-                     ? formatLastSeen({
-                          isOnline: chat.isOnline,
-                          lastSeenAt: chat.lastSeenAt,
-                       })
-                     : chat?.membersCount}
-               </p>
-            </div>
-         </div>
-         <ChatActionsPanel chatIdentifier={visibleChat} />
+         </InfoDialog>
+
+         <ChatActionsPanel chatIdentifier={chatIdentifier} />
          {isMobile && (
             <button
                onClick={() => router.replace(ROUTES.main.chats)}

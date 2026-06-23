@@ -31,6 +31,7 @@ export type PostEditPayload = {
 export type ModalPayloadMap = {
    confirm: ConfirmPayload;
    messageDelete: MessageDeletePayload;
+   chatDelete: ChatDeletePayload;
 
    preview: PreviewPayload;
    postSettings: PostSettingsPayload;
@@ -43,4 +44,9 @@ export type MessageDeletePayload = {
    onDeleteForMe: () => void | Promise<void>;
    onDeleteForEveryone?: () => void | Promise<void>;
    clearSelection: () => void;
+};
+
+export type ChatDeletePayload = {
+   onDeleteForMe: () => void | Promise<void>;
+   onDeleteForEveryone?: () => void | Promise<void>;
 };

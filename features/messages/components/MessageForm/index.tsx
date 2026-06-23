@@ -8,7 +8,6 @@ import { useSendMessage } from '../../hooks/queries/useSendMessage';
 import { AttachmentButton } from './AttachmentButton';
 import { AttachmentPreviewList } from './AttachmentPreviewList';
 import { handleMessageFiles } from '../../handlers/handle-message-files';
-import { toMessageAttachments } from '../../utils/to-message-attachments';
 import { useVoiceRecorder } from '../../hooks/ui/useVoiceRecorder';
 import { useMessageFormUI } from '../../hooks/ui/useMessageFormUi';
 import { MessageAction } from './MessageAction';
@@ -17,17 +16,23 @@ import MessageComposerPreview from './MessageComposerPreview';
 import { useEditMessage } from '../../hooks/queries/useEditMessage';
 import { useForwardMessages } from '../../hooks/queries/useForwardMessages';
 import { useMessagesSelectionContext } from '../../providers/MessageSelectionProvider';
-import { getMessagePermissions } from '../../helpers/get-message-permissions';
-import { useMessageActions } from '../../hooks/ui/useMessageActions';
-import { clear } from 'console';
-import { add } from 'date-fns';
-import { text } from 'stream/consumers';
 import { cn } from '@/shared/lib/utils';
 import EditReplyActions from './EditReplyActions';
+import MessagesBlock from './MessagesBlock';
 
 type MessageFormValues = z.infer<typeof messageSchema>;
 
-const MessageForm = ({ chatIdentifier }: { chatIdentifier: string }) => {
+const MessageForm = ({
+   chatIdentifier,
+   canSendMessages,
+   isLeft,
+   isPending,
+}: {
+   chatIdentifier: string;
+   canSendMessages: boolean;
+   isPending: boolean;
+   isLeft?: boolean;
+}) => {
    //======================================= Form ==============================================
 
    const form = useForm<MessageFormValues>({
@@ -101,7 +106,8 @@ const MessageForm = ({ chatIdentifier }: { chatIdentifier: string }) => {
       attachments.length > 0 ||
       hasForwardMessages;
 
-   const canSend = hasContent && !isUploading && !hasFailed && !isSending;
+   const canSend =
+      hasContent && !isUploading && !hasFailed && !isSending && !isPending;
 
    //======================================= Voice ==============================================
 
@@ -177,13 +183,15 @@ const MessageForm = ({ chatIdentifier }: { chatIdentifier: string }) => {
 
          default: {
             if (text || attachments.length) {
+               const clientId = crypto.randomUUID();
                await sendMessage({
                   text,
 
                   replyToMessageId:
                      action?.type === 'reply' ? action.message.id : undefined,
 
-                  attachments: toMessageAttachments(readyAttachments),
+                  attachments: readyAttachments,
+                  clientId,
                });
             }
 
@@ -193,10 +201,13 @@ const MessageForm = ({ chatIdentifier }: { chatIdentifier: string }) => {
 
                   return {
                      id: message.id,
-                     clientId: message.clientId ?? clientId,
+                     clientId: clientId,
                   };
                });
-               await forwardMessages({ forwardPayload });
+               await forwardMessages({
+                  forwardPayload,
+                  messages: action.messages,
+               });
             }
 
             break;
@@ -229,6 +240,8 @@ const MessageForm = ({ chatIdentifier }: { chatIdentifier: string }) => {
          form.setValue('text', value);
       },
    });
+
+   if (!canSendMessages) return <MessagesBlock isLeft={isLeft ?? false} />;
 
    return (
       <div className="relative">

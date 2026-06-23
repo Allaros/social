@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import {
    MessageResponseType,
    MessageStatusEnum,
+   MessagesTypeEnum,
 } from '../../types/messages.types';
 import Sender from './Sender';
 import { useIsMobile } from '@/shared/hooks/useIsMobile';
@@ -19,6 +20,7 @@ import { useMessageViewModel } from '../../hooks/ui/useMessageViewModel';
 import { getContextMenuActions } from '../../helpers/get-context-menu-actions';
 import { MessageMenu } from './MessageMenu';
 import { useMessageMetaLayout } from '../../hooks/ui/useMessageMetaLayout';
+import SystemMessage from './SystemMessage';
 
 const Message = ({
    message,
@@ -70,6 +72,9 @@ const Message = ({
       permissions,
       isSelectionMode: selection.isSelectionMode,
    });
+
+   if (message.type === MessagesTypeEnum.SYSTEM)
+      return <SystemMessage text={message.content?.text!} />;
 
    return (
       <MessageMenu actions={contextMenuActions}>

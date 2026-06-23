@@ -44,10 +44,10 @@ export type ForwardedFrom = {
 export type MessageResponseType = {
    id: number;
    type: MessagesTypeEnum;
-   createdAt: string;
+   createdAt: string | Date;
    isOwn: boolean;
    status: MessageStatusEnum;
-   sender: MessageSender | null;
+   sender: MessageSender;
    content: MessageContent | null;
    attachments: MessageAttachment[];
    editedAt?: Date;

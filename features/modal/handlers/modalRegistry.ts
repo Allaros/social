@@ -1,4 +1,5 @@
 import { ModalType } from '../constants/modals';
+import ChatDeleteModal from '../modals/ChatDeleteModal';
 import ConfirmModal from '../modals/ConfirmModal';
 import DeleteMessagesModal from '../modals/DeleteMessagesModal';
 import PostEditModal from '../modals/PostEditModal';
@@ -17,4 +18,5 @@ export const modalRegistry: {
    postSettings: PostSettingsModal,
    postEdit: PostEditModal,
    messageDelete: DeleteMessagesModal,
+   chatDelete: ChatDeleteModal,
 };
