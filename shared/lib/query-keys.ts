@@ -57,6 +57,12 @@ export const chatsKeys = {
 
    detail: (identifier?: string | null) =>
       [...chatsKeys.details(), identifier] as const,
+
+   participants: (chatIdentifier: string) => [
+      'chat',
+      'chat-participants',
+      chatIdentifier,
+   ],
 };
 
 export const messagesKeys = {

@@ -27,10 +27,6 @@ const ChatsPage = () => {
 
    const chatIdentifier = isMobile ? visibleChat : activeIdentifier;
 
-   console.log('active identifier:', activeIdentifier);
-   console.log('visible chat:', visibleChat);
-   console.log('chat identifier:', chatIdentifier);
-
    const { data: chat, isPending } = useGetActiveChat(chatIdentifier);
 
    if (!chatIdentifier || !chat) {

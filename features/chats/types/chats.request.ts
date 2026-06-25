@@ -16,7 +16,7 @@ export type CreateGroupChatPayload = {
    description?: string;
    isPublic?: boolean;
    avatarStorageKey?: string;
-   invitedProfilesIds: number[];
+   invitedProfileIds: number[];
 };
 
 export type CreateChannelPayload = {

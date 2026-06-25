@@ -58,6 +58,25 @@ export const chatsApi = {
       return data;
    },
 
+   getMembersToAdd: async ({
+      chatIdentifier,
+      cursor,
+      query,
+   }: {
+      chatIdentifier: string;
+      cursor?: string;
+      query?: string;
+   }) => {
+      const { data } = await api.get(`chats/${chatIdentifier}/members-to-add`, {
+         params: {
+            cursor,
+            query,
+         },
+      });
+
+      return data;
+   },
+
    kickMember: async ({
       chatIdentifier,
       targetProfileId,
@@ -106,5 +125,26 @@ export const chatsApi = {
    toggleMute: async (chatIdentifier: string) => {
       const { data } = await api.put(`chats/${chatIdentifier}/toggle-mute`);
       return data;
+   },
+
+   getChatAvatarUploadUrl: async (mimeType: string) => {
+      const { data } = await api.get(
+         `chats/avatar-upload-url?mimeType=${mimeType}`
+      );
+      return data;
+   },
+
+   async getParticipants(
+      chatIdentifier: string,
+      params?: {
+         cursor?: string | null;
+         limit?: number;
+      }
+   ) {
+      const response = await api.get(`/chats/${chatIdentifier}/members`, {
+         params,
+      });
+
+      return response.data;
    },
 };

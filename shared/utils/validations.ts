@@ -196,3 +196,15 @@ export const FriendsSearchSchema = z.object({
 export const messageSchema = z.object({
    text: z.string().max(4000).optional(),
 });
+
+export const createGroupChatSchema = z.object({
+   invitedProfileIds: z.array(z.number()),
+   title: z
+      .string()
+      .trim()
+      .max(120, { error: 'Название группы не может превышать 120 символов' })
+      .min(1, 'Название группы не должно быть пустым'),
+   avatarStorageKey: z.string().optional(),
+   description: z.string().trim().max(1000).optional(),
+   isPublic: z.boolean(),
+});

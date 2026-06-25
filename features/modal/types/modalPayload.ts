@@ -36,6 +36,7 @@ export type ModalPayloadMap = {
    preview: PreviewPayload;
    postSettings: PostSettingsPayload;
    postEdit: PostEditPayload;
+   membersToAdd: MembersToAddPayload;
 };
 
 export type MessageDeletePayload = {
@@ -49,4 +50,9 @@ export type MessageDeletePayload = {
 export type ChatDeletePayload = {
    onDeleteForMe: () => void | Promise<void>;
    onDeleteForEveryone?: () => void | Promise<void>;
+};
+
+export type MembersToAddPayload = {
+   chatIdentifier: string;
+   isOwner: boolean;
 };

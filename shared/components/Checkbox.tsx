@@ -28,7 +28,7 @@ const Checkbox = ({ checked, onChange, label }: Props) => {
             >
                <Check
                   size={14}
-                  className="text-white opacity-0 peer-checked:opacity-100 transition"
+                  className="text-white opacity-100 peer-checked:opacity-100 transition"
                />
             </div>
          </div>

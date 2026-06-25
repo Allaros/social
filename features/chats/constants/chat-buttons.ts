@@ -4,6 +4,7 @@ import {
    LucideProps,
    Trash2Icon,
    UserIcon,
+   UserPlus,
 } from 'lucide-react';
 import { ForwardRefExoticComponent, RefAttributes } from 'react';
 
@@ -25,6 +26,7 @@ export type ChatButton = {
 
 type ChatButtonsParams = {
    isMuted: boolean;
+   isOwner: boolean;
 
    profileHref?: string;
 
@@ -47,10 +49,12 @@ export const getChatButtons = (
                onClick: params.onToggleNotifications,
             },
             {
-               icon: LogOutIcon,
-               label: 'Покинуть чат',
+               icon: params.isOwner ? Trash2Icon : LogOutIcon,
+               label: params.isOwner ? 'Удалить' : 'Покинуть чат',
                variant: 'danger',
-               onClick: params.onLeaveChat,
+               onClick: params.isOwner
+                  ? params.onDeleteChat
+                  : params.onLeaveChat,
             },
          ];
 

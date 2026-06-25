@@ -17,6 +17,8 @@ import { useDeleteDirectChat } from '../hooks/useDeleteDirectChat';
 import { useLeaveChat } from '../hooks/useLeaveChat';
 import { useDeleteGroupChat } from '../hooks/useDeleteGroupChat';
 import { useRouter } from 'next/navigation';
+import ChatParticipants from './ChatParticipants';
+import { UserPlus } from 'lucide-react';
 
 const InfoDialog = ({
    children,
@@ -70,9 +72,19 @@ const InfoDialog = ({
       }
    };
 
+   const handleAddMembers = () => {
+      openModal(MODALS.MEMBERS_TO_ADD, {
+         chatIdentifier: activeIdentifier,
+         isOwner: chatInfo.isOwner,
+      });
+
+      setOpen(false);
+   };
+
    const chatButtons = getChatButtons(chatInfo.type, {
       isMuted: chatInfo.isMuted,
       onDeleteChat: handleDeletion,
+      isOwner: chatInfo.isOwner,
       onLeaveChat: () => leaveChat(activeIdentifier),
       onToggleNotifications: toggleMute,
       profileHref: isDirect
@@ -93,12 +105,14 @@ const InfoDialog = ({
                   <AvatarComponent
                      avatarUrl={chatInfo.avatarUrl}
                      isOnline={isDirect && chatInfo.isOnline}
-                     name={chatInfo.name}
+                     name={chatInfo.name ?? chatInfo.title}
                      className="size-20"
                   />
                </div>
                <div className="text-center">
-                  <p className="h5">{chatInfo.name}</p>
+                  <p className="h5">
+                     {isDirect ? chatInfo.name : chatInfo.title}
+                  </p>
                   <p className="textLabel text-neutralBlack-500">
                      @{isDirect ? chatInfo.username : chatInfo.slug}
                   </p>
@@ -108,6 +122,17 @@ const InfoDialog = ({
                </div>
             </DialogHeader>
             <div className="flex items-stretch gap-2 ">
+               {(chatInfo.isPublic || chatInfo.isOwner) && (
+                  <button
+                     className="bg-primary-100 cursor-pointer hover:bg-primary-200 transition-colors duration-300 gap-1 flex-1 text-center rounded-sm p-2 flex flex-col items-center justify-center"
+                     onClick={handleAddMembers}
+                  >
+                     <UserPlus />
+                     <span className="text-[12px]/[110%]">
+                        Добавить участников
+                     </span>
+                  </button>
+               )}
                {chatButtons.map((btn) => {
                   const Icon = btn.icon;
 
@@ -138,6 +163,12 @@ const InfoDialog = ({
                      );
                   }
                })}
+            </div>
+            <div>
+               <ChatParticipants
+                  chatIdentifier={activeIdentifier}
+                  isOwner={chatInfo.isOwner}
+               />
             </div>
          </DialogContent>
       </Dialog>

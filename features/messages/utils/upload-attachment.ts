@@ -1,4 +1,6 @@
+import { uploadFiles } from '@/shared/handlers/uploadFiles';
 import { messagesApi } from '../api/messages';
+
 import { AttachmentItem } from '../hooks/queries/useAttachments';
 
 export type UploadAttachmentResult = {
@@ -18,8 +20,6 @@ export const uploadAttachment = async (
    chatIdentifier: string,
    options: UploadAttachmentOptions = {}
 ): Promise<UploadAttachmentResult> => {
-   const { signal, onProgress } = options;
-
    const { signedUrl, storageKey } = await messagesApi.getAttachmentUploadUrl(
       chatIdentifier,
       {
@@ -27,55 +27,21 @@ export const uploadAttachment = async (
       }
    );
 
-   await new Promise<void>((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
+   const [uploaded] = await uploadFiles({
+      files: [
+         {
+            file: attachment.file,
+            signedUrl,
+            storageKey,
+         },
+      ],
 
-      const abortHandler = () => {
-         xhr.abort();
-      };
+      signal: options.signal,
 
-      signal?.addEventListener('abort', abortHandler);
-
-      xhr.upload.onprogress = (event) => {
-         if (event.lengthComputable && onProgress) {
-            const progress = Math.round((event.loaded / event.total) * 100);
-
-            onProgress(progress);
-         }
-      };
-
-      xhr.onload = () => {
-         signal?.removeEventListener('abort', abortHandler);
-
-         if (xhr.status >= 200 && xhr.status < 300) {
-            resolve();
-         } else {
-            reject(new Error(`Upload failed with status ${xhr.status}`));
-         }
-      };
-
-      xhr.onerror = () => {
-         signal?.removeEventListener('abort', abortHandler);
-
-         reject(new Error('Network error'));
-      };
-
-      xhr.onabort = () => {
-         signal?.removeEventListener('abort', abortHandler);
-
-         reject(new Error('Upload aborted'));
-      };
-
-      xhr.open('PUT', signedUrl);
-
-      xhr.setRequestHeader('Content-Type', attachment.mimeType);
-
-      xhr.send(attachment.file);
+      onProgress: (_, progress) => {
+         options.onProgress?.(progress);
+      },
    });
 
-   return {
-      storageKey,
-      mimeType: attachment.mimeType,
-      size: attachment.size,
-   };
+   return uploaded;
 };

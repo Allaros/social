@@ -64,8 +64,59 @@ export interface ChatDetail {
    isMuted: boolean;
    isLeft: boolean;
    canSendMessages: boolean;
+   isOwner: boolean;
 
    description: string | null;
 }
 
 export type ChatType = 'direct' | 'group';
+
+export type ChatParticipant = {
+   memberId: number;
+   memberProfileId: number;
+
+   name: string;
+   username: string;
+   avatarUrl: string | null;
+
+   role: 'owner' | 'admin' | 'member';
+
+   isOnline: boolean;
+   lastSeenAt?: string;
+   isSelf: boolean;
+
+   leftAt: string;
+   restrictedUntil: string;
+};
+
+export type GetParticipantsResponse = {
+   data: ChatParticipant[];
+   nextCursor: string | null;
+};
+
+export enum MemberChatStatusEnum {
+   MEMBER = 'member',
+   RESTRICTED = 'restricted',
+   NOT_MEMBER = 'not_member',
+}
+
+export type ChatMemberCandidate = {
+   profileId: number;
+
+   name: string;
+
+   username: string;
+
+   avatarUrl: string | null;
+
+   isOnline: boolean;
+
+   lastSeenAt: string | null;
+
+   chatStatus: MemberChatStatusEnum;
+};
+
+export type GetMembersToAddResponse = {
+   data: ChatMemberCandidate[];
+   nextCursor: string | null;
+};

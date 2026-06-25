@@ -8,20 +8,19 @@ export const useKickMember = () => {
 
    return useMutation({
       mutationFn: ({
-         chatIdentifier,
          restrictedUntil,
          targetProfileId,
+         chatIdentifier,
       }: {
-         chatIdentifier: string;
          targetProfileId: number;
          restrictedUntil: string | null;
+         chatIdentifier: string;
       }) =>
          chatsApi.kickMember({
             chatIdentifier,
             restrictedUntil,
             targetProfileId,
          }),
-
       onSuccess: (_, variables) => {
          queryClient.invalidateQueries({
             queryKey: chatsKeys.detail(variables.chatIdentifier),

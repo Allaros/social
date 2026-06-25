@@ -13,7 +13,7 @@ export const useUnbanMember = () => {
       }: {
          chatIdentifier: string;
          targetProfileId: number;
-      }) => chatsApi.addMember({ chatIdentifier, targetProfileId }),
+      }) => chatsApi.unbanMember({ chatIdentifier, targetProfileId }),
 
       onSuccess: (_, variables) => {
          queryClient.invalidateQueries({

@@ -2,8 +2,6 @@ import EmptyPage from '@/shared/components/EmptyPage';
 import { InfiniteData, UseInfiniteQueryResult } from '@tanstack/react-query';
 import React from 'react';
 import RelationsItem from './RelationsItem';
-import { FramedList } from '@/features/framer-animations/components/AnimatedList/FramedList';
-import { FramedItem } from '@/features/framer-animations/components/AnimatedList/FramedItem';
 import LoadMoreTrigger from '@/shared/components/LoadMoreTrigger';
 import RelationsAnimatedList from '@/features/framer-animations/components/AnimatedList/RelationsAnimatedList';
 

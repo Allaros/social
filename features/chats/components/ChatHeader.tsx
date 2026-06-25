@@ -11,6 +11,7 @@ import { ArrowLeft } from 'lucide-react';
 import ROUTES from '@/shared/constants/routes';
 
 import InfoDialog from './InfoDialog';
+import { pluralize } from '@/shared/utils/pluralize';
 
 const ChatHeader = () => {
    const searchParams = useSearchParams();
@@ -51,13 +52,13 @@ const ChatHeader = () => {
                </div>
                <div>
                   <p className="h6">{chat?.name ?? chat?.title}</p>
-                  <p className="textLabel">
+                  <p className="textLabel text-neutralBlack-500">
                      {chat?.type === 'direct'
                         ? formatLastSeen({
                              isOnline: chat.isOnline,
                              lastSeenAt: chat.lastSeenAt,
                           })
-                        : chat?.membersCount}
+                        : `${chat?.membersCount} ${pluralize(chat.membersCount, 'участник', 'участника', 'участников')}`}
                   </p>
                </div>
             </div>

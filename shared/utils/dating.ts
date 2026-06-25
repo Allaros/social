@@ -102,6 +102,41 @@ export function formatLastSeen({
    return `был(а) ${format(date, 'd MMM yyyy', { locale: ru })} в ${format(date, 'HH:mm')}`;
 }
 
+type FormatRestrictedUntilParams = {
+   restrictedUntil: Date | string | null;
+};
+
+export function formatRestrictedUntil({
+   restrictedUntil,
+}: FormatRestrictedUntilParams): string | null {
+   if (!restrictedUntil) {
+      return null;
+   }
+
+   const date =
+      typeof restrictedUntil === 'string'
+         ? new Date(restrictedUntil)
+         : restrictedUntil;
+
+   const now = new Date();
+
+   const yearsDiff = date.getFullYear() - now.getFullYear();
+
+   if (yearsDiff >= 50) {
+      return 'Исключён навсегда';
+   }
+
+   if (isThisYear(date)) {
+      return `Исключён до ${format(date, 'd MMM', {
+         locale: ru,
+      })} ${format(date, 'HH:mm')}`;
+   }
+
+   return `Исключён до ${format(date, 'd MMM yyyy', {
+      locale: ru,
+   })} ${format(date, 'HH:mm')}`;
+}
+
 function pluralizeMinutes(minutes: number): string {
    const mod10 = minutes % 10;
    const mod100 = minutes % 100;
