@@ -35,11 +35,6 @@ const ActionHeader = ({ post }: { post: PostResponse }) => {
                </svg>
                <span>{post.likesCount}</span>
             </button>
-
-            <button className="flex items-center gap-2 hover:bg-neutralWhite-400 p-1 transition-colors cursor-pointer rounded-[4px]">
-               <Image src={SendIco} width={19} height={19} alt={'repost'} />
-               <span>{post.repostsCount}</span>
-            </button>
          </div>
          <div>
             <div className="flex items-center gap-2">
