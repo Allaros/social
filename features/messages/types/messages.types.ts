@@ -27,7 +27,7 @@ export type MessageAttachment = {
    width: number | null;
    height: number | null;
    duration: number | null;
-   url: string | null;
+   url: string;
 };
 
 export type MessageReply = {
@@ -58,6 +58,8 @@ export type MessageResponseType = {
 
 export type MessagesPage = {
    data: MessageResponseType[];
+   chatId: number;
+   lastReadMessageId: number | null;
    nextCursor: string | null;
 };
 

@@ -6,12 +6,25 @@ import Chat from './Chat';
 import EmptyPage from '@/shared/components/EmptyPage';
 import LoadMoreTrigger from '@/shared/components/LoadMoreTrigger';
 import CreateGroupChatDialog from './CreateGroupChatDialog';
+import { Plus } from 'lucide-react';
 
 const ChatFeed = () => {
    const { data, fetchNextPage, hasNextPage, isFetching } = useGetChats();
 
    const chats = data?.pages.flatMap((page) => page.data) ?? [];
-   if (!chats.length) return <EmptyPage preset="emptyChats" />;
+   if (!chats.length)
+      return (
+         <div className="flex flex-col h-full">
+            <div className="py-2 flex-1 flex flex-col">
+               <EmptyPage preset="emptyChats" />
+            </div>
+            <CreateGroupChatDialog>
+               <div className="w-full h-12 cursor-pointer hover:bg-neutralWhite-500 transition-colors flex items-center justify-center text-center bg-neutralWhite-400 ">
+                  <p className="textBody">Создать групповой чат</p>
+               </div>
+            </CreateGroupChatDialog>
+         </div>
+      );
    return (
       <div className="flex flex-col h-full">
          <div className="py-2 flex-1 flex flex-col">
@@ -25,8 +38,11 @@ const ChatFeed = () => {
             />
          </div>
          <CreateGroupChatDialog>
-            <div className="w-full h-12 cursor-pointer hover:bg-neutralWhite-500 transition-colors flex items-center justify-center text-center bg-neutralWhite-400 ">
-               <p className="textBody">Создать групповой чат</p>
+            <div className="w-full h-12 px-2 cursor-pointer hover:bg-neutralWhite-500 transition-colors flex items-center justify-center text-center bg-neutralWhite-400 ">
+               <p className="textBody max-lg:hidden">Групповой чат</p>
+               <p className="textBody text-neutralBlack-500 lg:hidden">
+                  <Plus size={24} />
+               </p>
             </div>
          </CreateGroupChatDialog>
       </div>

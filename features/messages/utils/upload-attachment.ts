@@ -33,6 +33,7 @@ export const uploadAttachment = async (
             file: attachment.file,
             signedUrl,
             storageKey,
+            mimeType: attachment.mimeType,
          },
       ],
 

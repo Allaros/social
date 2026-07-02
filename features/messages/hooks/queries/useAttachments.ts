@@ -9,6 +9,9 @@ export type AttachmentItem = {
    previewUrl: string | null;
    mimeType: string;
    size: number;
+   width: number | null;
+   height: number | null;
+   duration: number | null;
    status: AttachmentStatus;
    progress: number;
    uploadedMetadata?: {
@@ -59,6 +62,9 @@ const createAttachmentItem = (file: File): AttachmentItem | null => {
       size: file.size,
       status: 'queued',
       progress: 0,
+      duration: null,
+      height: null,
+      width: null,
    };
 };
 
@@ -81,35 +87,122 @@ export const useAttachments = () => {
       };
    }, []);
 
-   const add = useCallback((files: File[]) => {
-      const current = attachmentsRef.current;
+   const updateAttachment = useCallback(
+      (id: string, patch: Partial<AttachmentItem>) => {
+         setAttachments((prev) =>
+            prev.map((attachment) =>
+               attachment.id === id
+                  ? {
+                       ...attachment,
+                       ...patch,
+                    }
+                  : attachment
+            )
+         );
+      },
+      []
+   );
 
-      const available = MAX_ATTACHMENTS - current.length;
+   const loadAttachmentMetadata = useCallback(
+      async (attachment: AttachmentItem) => {
+         const { file, previewUrl } = attachment;
 
-      if (available <= 0) {
-         toast.error(`Максимум ${MAX_ATTACHMENTS} файлов`);
+         if (file.type.startsWith('image/') && previewUrl) {
+            const img = new Image();
 
-         return [];
-      }
+            img.onload = () => {
+               updateAttachment(attachment.id, {
+                  width: img.naturalWidth,
+                  height: img.naturalHeight,
+               });
+               img.onload = null;
+            };
 
-      const created: AttachmentItem[] = [];
+            img.src = previewUrl;
 
-      for (const file of files.slice(0, available)) {
-         const item = createAttachmentItem(file);
-
-         if (item) {
-            created.push(item);
+            return;
          }
-      }
 
-      if (!created.length) {
-         return [];
-      }
+         if (file.type.startsWith('video/') && previewUrl) {
+            const video = document.createElement('video');
 
-      setAttachments((prev) => [...prev, ...created]);
+            video.preload = 'metadata';
 
-      return created;
-   }, []);
+            video.onloadedmetadata = () => {
+               updateAttachment(attachment.id, {
+                  width: video.videoWidth,
+                  height: video.videoHeight,
+                  duration: Math.round(video.duration * 1000),
+               });
+               video.src = '';
+            };
+
+            video.src = previewUrl;
+
+            return;
+         }
+
+         if (file.type.startsWith('audio/')) {
+            const audio = document.createElement('audio');
+
+            audio.preload = 'metadata';
+
+            const url = URL.createObjectURL(file);
+
+            audio.onloadedmetadata = () => {
+               updateAttachment(attachment.id, {
+                  duration: Math.round(audio.duration * 1000),
+               });
+
+               URL.revokeObjectURL(url);
+            };
+
+            audio.onerror = () => {
+               URL.revokeObjectURL(url);
+            };
+
+            audio.src = url;
+         }
+      },
+      [updateAttachment]
+   );
+
+   const add = useCallback(
+      (files: File[]) => {
+         const current = attachmentsRef.current;
+
+         const available = MAX_ATTACHMENTS - current.length;
+
+         if (available <= 0) {
+            toast.error(`Максимум ${MAX_ATTACHMENTS} файлов`);
+
+            return [];
+         }
+
+         const created: AttachmentItem[] = [];
+
+         for (const file of files.slice(0, available)) {
+            const item = createAttachmentItem(file);
+
+            if (item) {
+               created.push(item);
+            }
+         }
+
+         if (!created.length) {
+            return [];
+         }
+
+         setAttachments((prev) => [...prev, ...created]);
+
+         created.forEach((attachment) => {
+            void loadAttachmentMetadata(attachment);
+         });
+
+         return created;
+      },
+      [loadAttachmentMetadata]
+   );
 
    const remove = useCallback((id: string) => {
       setAttachments((prev) => {
@@ -135,22 +228,6 @@ export const useAttachments = () => {
 
       setAttachments([]);
    }, []);
-
-   const updateAttachment = useCallback(
-      (id: string, patch: Partial<AttachmentItem>) => {
-         setAttachments((prev) =>
-            prev.map((attachment) =>
-               attachment.id === id
-                  ? {
-                       ...attachment,
-                       ...patch,
-                    }
-                  : attachment
-            )
-         );
-      },
-      []
-   );
 
    const readyAttachments = attachments.filter(
       (attachment) => attachment.status === 'uploaded'

@@ -7,6 +7,11 @@ import {
 } from '../types/chats.request';
 
 export const chatsApi = {
+   getUnreadChatsState: async () => {
+      const { data } = await api.get('chats/unread-state');
+      return data;
+   },
+
    getMyChats: async (params?: GetMyChatsParams) => {
       const { data } = await api.get('chats', { params });
       return data;

@@ -1,4 +1,5 @@
 import { MessageAttachment } from '@/features/messages/types/messages.types';
+import { useIsMobile } from '@/shared/hooks/useIsMobile';
 import { PauseIcon, PlayIcon, Volume2Icon } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -95,30 +96,36 @@ const AudioAttachment = ({ audio }: AudioAttachmentProps) => {
       setCurrentTime(time);
    };
 
+   const isMobile = useIsMobile();
+
    const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
    return (
-      <div className="flex items-center gap-3 rounded-2xl bg-neutral-100 px-3 py-2 min-w-[260px] max-w-[320px]">
+      <div className="flex items-center gap-3 max-md:gap-1.5 rounded-2xl  max-w-[320px]">
          <audio ref={audioRef} src={audio.url!} preload="metadata" />
 
          <button
             type="button"
             onClick={togglePlayback}
-            className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition hover:scale-[1.03] active:scale-[0.97]"
+            className="flex size-10 max-md:size-8 shrink-0 items-center justify-center rounded-full bg-neutralWhite-100 text-primary-900 transition hover:scale-[1.03] active:scale-[0.97]"
          >
             {isPlaying ? (
-               <PauseIcon size={18} />
+               <PauseIcon fill="#4C68D5" size={isMobile ? 15 : 18} />
             ) : (
-               <PlayIcon size={18} className="translate-x-[1px]" />
+               <PlayIcon
+                  size={isMobile ? 15 : 18}
+                  fill="#4C68D5"
+                  className="translate-x-[1px]"
+               />
             )}
          </button>
 
-         <div className="flex min-w-0 flex-1 flex-col gap-1">
-            <div className="relative h-2">
-               <div className="absolute inset-0 rounded-full bg-neutral-300" />
+         <div className="flex min-w-0 flex-1 flex-col translate-y-[15%] gap-1">
+            <div className="relative h-2 max-md:h-1.5">
+               <div className="absolute inset-0 rounded-full bg-neutralWhite-100/20" />
 
                <div
-                  className="absolute inset-y-0 left-0 rounded-full bg-primary transition-all"
+                  className="absolute inset-y-0 left-0 rounded-full bg-neutralWhite-100 transition-all"
                   style={{
                      width: `${progress}%`,
                   }}
@@ -135,13 +142,7 @@ const AudioAttachment = ({ audio }: AudioAttachmentProps) => {
                />
             </div>
 
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
-               <div className="flex items-center gap-1">
-                  <Volume2Icon size={12} />
-
-                  <span>Voice message</span>
-               </div>
-
+            <div className="flex items-center justify-between text-[12px]/[100%] text-neutralWhite-100">
                <span>
                   {formatTime(currentTime)} / {formatTime(duration)}
                </span>

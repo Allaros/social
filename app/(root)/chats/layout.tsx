@@ -17,7 +17,7 @@ const ChatsLayout = ({ children }: { children: React.ReactNode }) => {
       <MessagesSelectionProvider chatIdentifier={activeIdentifier}>
          <MessageComposerProvider>
             {/* DESKTOP */}
-            <div className="hidden md:grid card h-[calc(100vh-10.5rem)] min-h-0 grid-cols-[1fr_2fr] max-lg:grid-cols-[1fr_auto] grid-rows-[auto_1fr]">
+            <div className="hidden md:grid card h-[calc(100vh-10.5rem)] min-h-0 grid-cols-[1fr_2fr] max-lg:grid-cols-[max-content_minmax(0,1fr)] grid-rows-[auto_1fr]">
                <div className="grid grid-cols-subgrid col-span-2 border-b border-neutralWhite-400 items-center h-16">
                   <div className="px-4 py-2 border-r border-neutralWhite-400">
                      <p className="h5">Чаты</p>
@@ -26,7 +26,7 @@ const ChatsLayout = ({ children }: { children: React.ReactNode }) => {
                   <ChatHeader />
                </div>
 
-               <div className="py-4 min-h-0 min-w-0 h-full border-r border-neutralWhite-400">
+               <div className="pt-2 min-h-0 min-w-0 h-full border-r border-neutralWhite-400">
                   <ChatFeed />
                </div>
 

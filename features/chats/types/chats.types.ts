@@ -2,10 +2,10 @@ import { MessagesTypeEnum } from '@/features/messages/types/messages.types';
 import { InfiniteData } from '@tanstack/react-query';
 
 export interface LastMessagePreview {
-   text: string | null;
-   senderName: string | null;
-   senderAvatarUrl: string | null;
-   createdAt: string | null;
+   text?: string | null;
+   senderName?: string | null;
+   senderAvatarUrl?: string | null;
+   createdAt: string | Date | null;
    type: MessagesTypeEnum;
 }
 
@@ -120,3 +120,34 @@ export type GetMembersToAddResponse = {
    data: ChatMemberCandidate[];
    nextCursor: string | null;
 };
+
+export type UnreadChatsStateType = {
+   unreadMutedChatsCount: number;
+   unreadChatsCount: number;
+};
+
+export type UnreadChatsStateChangedType = {
+   unreadMutedChatsCountDelta: number;
+   unreadChatsCountDelta: number;
+};
+
+export type ChatStateUpdatedType = {
+   chatId: number;
+   lastMessagePayload: {
+      textPreview: string | null;
+      senderName: string | null;
+      createdAt: string | null;
+      type: MessagesTypeEnum;
+   } | null;
+   unreadCount: number;
+   receiverProfileId: number;
+   type: ChatStateUpdateType;
+};
+
+export enum ChatStateUpdateType {
+   CREATE = 'create',
+   DELETE = 'delete',
+   EDIT = 'edit',
+   READ = 'read',
+   HIDE = 'hide',
+}

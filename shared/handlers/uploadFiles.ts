@@ -2,6 +2,7 @@ export type UploadFilePayload = {
    file: File;
    signedUrl: string;
    storageKey: string;
+   mimeType: string;
 };
 
 export type UploadedFileMetadata = {
@@ -28,7 +29,6 @@ export const uploadFiles = async ({
          (filePayload) =>
             new Promise<UploadedFileMetadata>((resolve, reject) => {
                const xhr = new XMLHttpRequest();
-
                const abortHandler = () => {
                   xhr.abort();
                };
@@ -50,7 +50,7 @@ export const uploadFiles = async ({
                   if (xhr.status >= 200 && xhr.status < 300) {
                      resolve({
                         storageKey: filePayload.storageKey,
-                        mimeType: filePayload.file.type,
+                        mimeType: filePayload.mimeType,
                         size: filePayload.file.size,
                      });
                   } else {
@@ -74,7 +74,7 @@ export const uploadFiles = async ({
 
                xhr.open('PUT', filePayload.signedUrl);
 
-               xhr.setRequestHeader('Content-Type', filePayload.file.type);
+               xhr.setRequestHeader('Content-Type', filePayload.mimeType);
 
                xhr.send(filePayload.file);
             })

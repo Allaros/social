@@ -1,9 +1,14 @@
+'use client';
+
 import React from 'react';
 import { MessageAttachment } from '../../types/messages.types';
 import { groupMessageAttachments } from '../../utils/group-message-attachments';
 import MediaAttachment from './attachments/MediaAttachment';
 import AudioAttachment from './attachments/AudioAttachment';
 import FileAttachment from './attachments/FileAttachment';
+import { useModal } from '@/features/modal/hooks/useModal';
+import { MODALS } from '@/features/modal/constants/modals';
+import MediaGridLayout from './attachments/MediaGridLayout';
 
 const MessageAttachments = ({
    attachments,
@@ -13,14 +18,17 @@ const MessageAttachments = ({
    const { audioAttachments, fileAttachments, mediaAttachments } =
       groupMessageAttachments(attachments);
 
+   const { openModal } = useModal();
+
+   const previewItems = mediaAttachments.map((media) => ({
+      src: media.url!,
+      type: media.mimeType,
+   }));
+
    return (
       <div>
          {!!mediaAttachments.length && (
-            <div>
-               {mediaAttachments.map((media) => (
-                  <MediaAttachment key={media.id} media={media} />
-               ))}
-            </div>
+            <MediaGridLayout media={mediaAttachments} />
          )}
 
          {!!audioAttachments.length && (

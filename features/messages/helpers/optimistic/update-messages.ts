@@ -1,6 +1,6 @@
 import {
-   MessageResponseType,
    MessagesInfiniteData,
+   MessageResponseType,
 } from '../../types/messages.types';
 
 export const updateMessages = (

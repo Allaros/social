@@ -10,10 +10,13 @@ import ROUTES from '@/shared/constants/routes';
 import { cn } from '@/shared/lib/utils';
 import { useNotificationsState } from '@/features/notifications/hooks/useNotificationsCount';
 import { Users } from 'lucide-react';
+import { useUnreadState } from '@/features/chats/hooks/useUnreadState';
 
 const UserLinks = () => {
    const { data: user } = useMe();
    const { data: notificationsState } = useNotificationsState();
+   const { data: unreadChatsState } = useUnreadState();
+
    const username = user?.profile?.username;
    return (
       <ul className={cn('flex flex-col', 'items-center', 'lg:items-stretch')}>
@@ -56,6 +59,23 @@ const UserLinks = () => {
             >
                <Image src={MessagesIco} alt="messages" width={20} height={20} />
                <p className="flex-1 max-lg:hidden">Сообщения</p>
+               {unreadChatsState &&
+                  unreadChatsState.unreadChatsCount +
+                     unreadChatsState.unreadMutedChatsCount >
+                     0 && (
+                     <div
+                        className={cn(
+                           'textLabel-medium text-neutralWhite-100  rounded-full size-5 flex items-center justify-center',
+                           unreadChatsState.unreadChatsCount === 0
+                              ? 'bg-neutralBlack-500'
+                              : 'bg-primary-900',
+                           'max-lg:absolute max-lg:r-0 max-lg:t-0 max-lg:size-4 max-lg:-translate-y-2 max-lg:translate-x-3.5'
+                        )}
+                     >
+                        {unreadChatsState.unreadChatsCount +
+                           unreadChatsState.unreadMutedChatsCount}
+                     </div>
+                  )}
             </Link>
             <div className="h-px bg-neutralWhite-400 mx-8 max-lg:mx-4"></div>
          </li>
@@ -76,7 +96,12 @@ const UserLinks = () => {
                />
                <p className="flex-1 max-lg:hidden">Уведомления</p>
                {notificationsState && notificationsState.unseenCount > 0 && (
-                  <div className="textLabel-medium text-neutralWhite-100 bg-primary-900 rounded-full size-5 flex items-center justify-center">
+                  <div
+                     className={cn(
+                        'textLabel-medium text-neutralWhite-100 bg-primary-900 rounded-full size-5 flex items-center justify-center',
+                        'max-lg:absolute max-lg:r-0 max-lg:t-0 max-lg:size-4 max-lg:-translate-y-2 max-lg:translate-x-3.5'
+                     )}
+                  >
                      {notificationsState.unseenCount}
                   </div>
                )}

@@ -14,7 +14,6 @@ export function registerProfileListener(
    queryClient: QueryClient
 ) {
    const handlePresenceChanged = ({ profileId, isOnline }: PresencePayload) => {
-      console.log('state changed');
       queryClient.setQueriesData(
          {
             queryKey: profileKeys.all,

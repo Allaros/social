@@ -11,10 +11,7 @@ import { toMessageAttachments } from '../../utils/to-message-attachments';
 import { AttachmentItem } from './useAttachments';
 import { createOptimisticMessage } from '../../helpers/optimistic/create-optimistic-messages';
 import { prependMessages } from '../../helpers/optimistic/prepend-messages';
-import {
-   patchMessageByClientId,
-   updateMessagesByClientId,
-} from '../../helpers/optimistic/update-messages-by-client-id';
+import { patchMessageByClientId } from '../../helpers/optimistic/update-messages-by-client-id';
 
 export type SendMessageInput = {
    text?: string;
@@ -74,9 +71,7 @@ export const useSendMessage = (chatIdentifier: string) => {
             (old: MessagesInfiniteData) =>
                old
                   ? patchMessageByClientId(old, message.clientId, {
-                       id: message.id,
-                       createdAt: message.createdAt,
-                       status: MessageStatusEnum.SENT,
+                       ...message,
                     })
                   : old
          );

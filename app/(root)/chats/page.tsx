@@ -31,7 +31,7 @@ const ChatsPage = () => {
 
    if (!chatIdentifier || !chat) {
       return (
-         <div className="flex items-center justify-center text-center h5 h-full">
+         <div className="flex items-center justify-center text-center h5 h-full w-full">
             Выберите чат, либо создайте новый,
             <br />
             написав кому-нибудь

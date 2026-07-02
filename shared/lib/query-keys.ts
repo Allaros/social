@@ -63,6 +63,8 @@ export const chatsKeys = {
       'chat-participants',
       chatIdentifier,
    ],
+
+   unreadState: () => ['chats-unread-state'],
 };
 
 export const messagesKeys = {

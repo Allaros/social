@@ -245,22 +245,21 @@ const MessageForm = ({
 
    return (
       <div className="relative">
-         <EditReplyActions
-            className={cn(
-               'absolute z-1 bottom-0 left-0 w-full h-12 flex items-center gap-4 px-4 justify-around transition-transform duration-300',
-               isSelectionMode
-                  ? 'translate-y-0 pointer-events-auto'
-                  : 'translate-y-full pointer-events-none'
-            )}
-            chatIdentifier={chatIdentifier}
-         />
+         {isSelectionMode && (
+            <EditReplyActions
+               className={cn(
+                  'absolute z-1 bottom-0 left-0 w-full h-12 flex items-center gap-4 px-4 justify-around transition-transform duration-300'
+               )}
+               chatIdentifier={chatIdentifier}
+            />
+         )}
          <div
             onDragEnter={handleDragEnter}
             onDragLeave={handleDragLeave}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
             className={cn(
-               'border-t border-neutralWhite-400 transition-all duration-300 relative z-2',
+               'border-t border-neutralWhite-400 bg-neutralWhite-100 transition-all duration-300 relative z-2',
                isDragging ? 'bg-neutralWhite-200' : '',
                isSelectionMode && 'translate-y-full'
             )}

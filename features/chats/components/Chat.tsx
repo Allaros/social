@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ChatListItem } from '../types/chats.types';
 import AvatarComponent from '@/features/user/components/AvatarComponent';
 import { formatPostDate } from '@/shared/utils/dating';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { cn } from '@/shared/lib/utils';
 import Link from 'next/link';
 import ROUTES from '@/shared/constants/routes';
 import { MessagesTypeEnum } from '@/features/messages/types/messages.types';
+import { useChatRealtimeConnection } from '@/features/websocket/hooks/useChatRealtimeConnection';
 
 const Chat = ({ chat }: { chat: ChatListItem }) => {
    const searchParams = useSearchParams();

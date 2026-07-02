@@ -35,6 +35,7 @@ const variants = {
 };
 
 export default function PreviewModal({ payload, close }: Props) {
+   console.log(payload);
    const { items, index } = payload;
    const [isClosing, setIsClosing] = useState(false);
    const [exitY, setExitY] = useState(0);

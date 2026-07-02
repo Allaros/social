@@ -36,13 +36,16 @@ export const useMessageMetaLayout = (message: MessageResponseType) => {
 
       const attachments = message.attachments ?? [];
 
-      const hasSingleMediaAttachment =
-         attachments.length === 1 &&
-         [MessagesAttachmentEnum.IMAGE, MessagesAttachmentEnum.VIDEO].includes(
-            attachments[0].type
+      const hasOnlyMediaAttachments =
+         attachments.length > 0 &&
+         attachments.every((attachment) =>
+            [
+               MessagesAttachmentEnum.IMAGE,
+               MessagesAttachmentEnum.VIDEO,
+            ].includes(attachment.type)
          );
 
-      if (hasSingleMediaAttachment) {
+      if (hasOnlyMediaAttachments) {
          setLayout({
             mode: 'media-overlay',
             contentPaddingRight: 0,
@@ -73,7 +76,7 @@ export const useMessageMetaLayout = (message: MessageResponseType) => {
       setLayout({
          mode: 'stacked',
          contentPaddingRight: 8,
-         contentPaddingBottom: meta.offsetHeight,
+         contentPaddingBottom: meta.offsetHeight / 1.5,
          metaClassName: 'bottom-1 right-0.5',
       });
    }, [

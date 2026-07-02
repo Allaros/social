@@ -92,7 +92,8 @@ const Message = ({
                ref={containerRef}
                className={cn(
                   `rounded-sm textBody self-center max-w-[60%] relative ${message.isOwn ? 'bg-primary-900 text-neutralWhite-100' : 'text-neutralWhite-100 bg-neutralBlack-900'}`,
-                  containerStyles[preset]
+                  containerStyles[preset],
+                  !!message.attachments.length && 'w-full'
                )}
             >
                {(message.reply || message.forwardedFrom) && (
@@ -121,11 +122,13 @@ const Message = ({
                         layout.metaClassName
                      )}
                   >
-                     <div className="textLabel whitespace-nowrap">
+                     <div className="textLabel whitespace-nowrap px-0.5">
                         {formatMessageTime(message.createdAt)}{' '}
                         {message.editedAt && <span>(ред.)</span>}
                      </div>
-                     <MessageStatusIndicator status={message.status} />
+                     {message.isOwn && (
+                        <MessageStatusIndicator status={message.status} />
+                     )}
                   </div>
                </div>
             </div>
