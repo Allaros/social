@@ -1,9 +1,9 @@
 import SuggestedFriendsCard from '@/features/friends/components/cards/SuggestedFriendsCard';
 import NotificationsFeed from '@/features/notifications/components/NotificationsFeed';
 import { cn } from '@/shared/lib/utils';
-import React from 'react';
+import React, { Suspense } from 'react';
 
-const NotificationsPage = () => {
+const NotificationsPageContent = () => {
    return (
       <section
          className={cn(
@@ -12,8 +12,11 @@ const NotificationsPage = () => {
             'lg:grid-cols-[6fr_3fr]'
          )}
       >
-         <div className="card ">
+         {' '}
+         <div className="card">
+            {' '}
             <div className="border-b border-neutralWhite-400">
+               {' '}
                <p
                   className={cn(
                      'font-medium',
@@ -21,14 +24,22 @@ const NotificationsPage = () => {
                      'md:text-[16px] md:py-6 md:px-8'
                   )}
                >
-                  Уведомления
-               </p>
-            </div>
-            <NotificationsFeed />
-         </div>
-         <SuggestedFriendsCard></SuggestedFriendsCard>
+                  {' '}
+                  Уведомления{' '}
+               </p>{' '}
+            </div>{' '}
+            <NotificationsFeed />{' '}
+         </div>{' '}
+         <SuggestedFriendsCard />{' '}
       </section>
    );
 };
-
+const NotificationsPage = () => {
+   return (
+      <Suspense fallback={null}>
+         {' '}
+         <NotificationsPageContent />{' '}
+      </Suspense>
+   );
+};
 export default NotificationsPage;

@@ -9,13 +9,15 @@ import { WebSocketProvider } from '@/features/websocket/providers/WebSocketProvi
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useIsMobile } from '@/shared/hooks/useIsMobile';
 import { cn } from '@/shared/lib/utils';
+import { Suspense } from 'react';
 
-const MainLayout = ({ children }: { children: React.ReactNode }) => {
+const MainLayoutContent = ({ children }: { children: React.ReactNode }) => {
    const searchParams = useSearchParams();
 
    const activeIdentifier = searchParams.get('chat');
    const pathname = usePathname();
    const isMobile = useIsMobile();
+
    const hideHeader = isMobile && pathname.startsWith('/chats');
    const hidePanel = isMobile && !!activeIdentifier;
 
@@ -24,14 +26,16 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
          <WebSocketProvider>
             <div className="relative">
                <RootHeader hideHeader={hideHeader} />
+
                <GlobalDropHandler />
+
                <div
                   className={cn(
                      'grid min-h-screen box-border pb-10 items-start',
                      'grid-cols-[3fr_9fr] pt-32 gap-8',
                      'max-[1280px]:gap-4',
                      'max-lg:grid-cols-[1fr_9fr]',
-                     'max-md:grid-cols-1 ',
+                     'max-md:grid-cols-1',
                      hideHeader ? 'max-md:pt-0' : 'max-md:pt-19',
                      hidePanel && 'pb-0'
                   )}
@@ -39,12 +43,22 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
                   <div className="sticky top-24 self-start max-md:hidden">
                      <UserCard />
                   </div>
+
                   {children}
                </div>
+
                <LinksPanel />
             </div>
          </WebSocketProvider>
       </AuthGuard>
+   );
+};
+
+const MainLayout = ({ children }: { children: React.ReactNode }) => {
+   return (
+      <Suspense fallback={null}>
+         <MainLayoutContent>{children}</MainLayoutContent>
+      </Suspense>
    );
 };
 

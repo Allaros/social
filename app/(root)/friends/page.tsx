@@ -16,9 +16,9 @@ type FormValues = z.infer<typeof FriendsSearchSchema>;
 
 const FriendsPageContent = () => {
    const [tab, setTab] = useState<RelationType>('friends');
+
    const form = useForm<FormValues>({
       resolver: zodResolver(FriendsSearchSchema),
-
       defaultValues: {
          query: '',
       },
@@ -34,19 +34,20 @@ const FriendsPageContent = () => {
    });
 
    return (
-      <div className="card">
-         <FriendsSearch form={form} />
-         <RelationsTabs setTab={setTab} currentTab={tab} />
-         <RelationsFeed relationsQuery={relations} />
-      </div>
+      <>
+         <div className="card">
+            <FriendsSearch form={form} />
+            <RelationsTabs setTab={setTab} currentTab={tab} />
+            <RelationsFeed relationsQuery={relations} />
+         </div>
+      </>
    );
 };
 
 const FriendsPage = () => {
    return (
       <Suspense fallback={null}>
-         {' '}
-         <FriendsPageContent />{' '}
+         <FriendsPageContent />
       </Suspense>
    );
 };
