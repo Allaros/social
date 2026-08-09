@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import Loader from '@/features/loader/components/Loader';
 import DynamicForm, {
    FieldConfig,
@@ -11,33 +12,34 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import z from 'zod';
 
-const ResetPassword = () => {
+const ResetPasswordContent = () => {
    const router = useRouter();
    const { mutate: changePass, isPending } = useChangePass();
    const searchParams = useSearchParams();
 
    const handleSubmit = (data: z.infer<typeof ResetPasswordSchema>) => {
       const token = searchParams.get('recovery');
+
       if (!token) {
          toast.error('Токен восстановления отсутствует или недействителен');
          router.replace(ROUTES.auth.forgotPass);
          return null;
       }
+
       const { confirmPassword, password } = data;
 
       const payload: IChangePass = {
          password,
          token,
       };
+
       changePass(payload);
    };
 
    return (
       <>
-         <h5 className="h5">Восстановление пароля</h5>
-         <p className="textBody text-neutralBlack-500 text-center mb-4">
-            Введите email чтобы сбросить пароль и получить доступ к аккаунту
-         </p>
+         Восстановление пароля Введите email чтобы сбросить пароль и получить
+         доступ к аккаунту
          <DynamicForm
             schema={ResetPasswordSchema}
             fields={
@@ -52,8 +54,16 @@ const ResetPassword = () => {
             }
             onSubmit={handleSubmit}
             btnDisabled={isPending}
-         ></DynamicForm>
+         />
       </>
+   );
+};
+
+const ResetPassword = () => {
+   return (
+      <Suspense fallback={<Loader visible={true} />}>
+         <ResetPasswordContent />
+      </Suspense>
    );
 };
 
