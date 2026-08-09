@@ -8,13 +8,13 @@ import { RelationType } from '@/features/friends/types/friends.interface';
 import { useDebounce } from '@/shared/utils/debounce';
 import { FriendsSearchSchema } from '@/shared/utils/validations';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 
 type FormValues = z.infer<typeof FriendsSearchSchema>;
 
-const FriendsPage = () => {
+const FriendsPageContent = () => {
    const [tab, setTab] = useState<RelationType>('friends');
    const form = useForm<FormValues>({
       resolver: zodResolver(FriendsSearchSchema),
@@ -39,6 +39,15 @@ const FriendsPage = () => {
          <RelationsTabs setTab={setTab} currentTab={tab} />
          <RelationsFeed relationsQuery={relations} />
       </div>
+   );
+};
+
+const FriendsPage = () => {
+   return (
+      <Suspense fallback={null}>
+         {' '}
+         <FriendsPageContent />{' '}
+      </Suspense>
    );
 };
 
